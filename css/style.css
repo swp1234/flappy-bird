@@ -23,6 +23,19 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Touch Optimization */
+button, a, input, [role="button"], [role="link"] {
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+input[type="text"], textarea {
+    -webkit-user-select: text;
+    user-select: text;
 }
 
 html, body {
@@ -32,6 +45,9 @@ html, body {
     background-color: var(--background);
     color: var(--text-primary);
     overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-touch-callout: none;
 }
 
 body {
