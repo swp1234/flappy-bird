@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Sky Flap - 캐주얼 아케이드 게임",
+    "description": "날기, 장애물 피하기, 도전하기! 얼마나 멀리 날 수 있나요?"
+  },
+  "game": {
+    "title": "Sky Flap",
+    "subtitle": "탭해서 날기",
+    "instruction1": "탭이나 클릭으로 새를 날게 하세요",
+    "instruction2": "파이프와 장애물을 피하세요",
+    "instruction3": "점수가 올라갈수록 난이도가 증가합니다",
+    "start": "게임 시작",
+    "restart": "다시 하기",
+    "home": "홈",
+    "share": "결과 공유",
+    "score": "점수:",
+    "bestScore": "최고 점수:",
+    "level": "레벨:",
+    "gameOver": "게임 오버",
+    "newRecord": "신기록!",
+    "paused": "일시정지됨"
+  }
+}

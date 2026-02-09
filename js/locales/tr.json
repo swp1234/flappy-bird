@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Sky Flap - Casual Arcade Oyunu",
+    "description": "Dokunarak uçun, engelleri atlatın ve kendinize meydan okuyun! Ne kadar uzağa uçabilirsiniz?"
+  },
+  "game": {
+    "title": "Sky Flap",
+    "subtitle": "Dokunarak Uç",
+    "instruction1": "Kuşu uçurmak için dokunun veya tıklayın",
+    "instruction2": "Boruları ve engelleri atlatın",
+    "instruction3": "Puanınız arttıkça zorluk da artar",
+    "start": "Oyunu Başlat",
+    "restart": "Tekrar Oyna",
+    "home": "Ana Sayfa",
+    "share": "Sonucu Paylaş",
+    "score": "Puan:",
+    "bestScore": "En Yüksek Puan:",
+    "level": "Seviye:",
+    "gameOver": "Oyun Bitti",
+    "newRecord": "Yeni Rekor!",
+    "paused": "DURDURULDU"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Sky Flap - Casual Arcade-Spiel",
+    "description": "Tippen Sie zum Fliegen, vermeiden Sie Hindernisse und fordern Sie sich selbst heraus! Wie weit können Sie fliegen?"
+  },
+  "game": {
+    "title": "Sky Flap",
+    "subtitle": "Zum Fliegen Tippen",
+    "instruction1": "Tippen oder klicken Sie, um den Vogel fliegen zu lassen",
+    "instruction2": "Vermeiden Sie die Rohre und Hindernisse",
+    "instruction3": "Der Schwierigkeitsgrad erhöht sich mit Ihrem Punktestand",
+    "start": "Spiel Starten",
+    "restart": "Nochmal Spielen",
+    "home": "Startseite",
+    "share": "Ergebnis Teilen",
+    "score": "Punkte:",
+    "bestScore": "Beste Punktzahl:",
+    "level": "Level:",
+    "gameOver": "Spielende",
+    "newRecord": "Neuer Rekord!",
+    "paused": "PAUSIERT"
+  }
+}

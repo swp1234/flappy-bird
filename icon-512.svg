@@ -1,0 +1,143 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f23;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a0f3a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="birdGradient512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="pipeShadow512" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:rgba(217, 70, 239, 0.4);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(217, 70, 239, 0.1);stop-opacity:1" />
+    </radialGradient>
+    <filter id="glow512">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="dropShadow512">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" fill="url(#bgGradient512)"/>
+
+  <!-- Grid pattern background -->
+  <g stroke="rgba(102, 126, 234, 0.1)" stroke-width="1" opacity="0.3">
+    <defs>
+      <pattern id="grid512" width="32" height="32" patternUnits="userSpaceOnUse">
+        <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(102, 126, 234, 0.1)" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="512" height="512" fill="url(#grid512)" />
+  </g>
+
+  <!-- Decorative background circles -->
+  <circle cx="100" cy="100" r="80" fill="rgba(102, 126, 234, 0.05)"/>
+  <circle cx="400" cy="400" r="100" fill="rgba(217, 70, 239, 0.03)"/>
+  <circle cx="420" cy="80" r="60" fill="rgba(0, 255, 136, 0.02)"/>
+
+  <!-- Top pipe obstacles group -->
+  <g filter="url(#dropShadow512)">
+    <!-- Pipe 1 (Top) -->
+    <g>
+      <rect x="60" y="50" width="50" height="100" fill="rgba(217, 70, 239, 0.5)" stroke="rgba(217, 70, 239, 0.8)" stroke-width="2"/>
+      <circle cx="85" cy="85" r="8" fill="rgba(0, 255, 136, 0.5)" filter="url(#glow512)"/>
+      <rect x="60" y="50" width="50" height="100" fill="url(#pipeShadow512)" opacity="0.3"/>
+    </g>
+
+    <!-- Pipe 2 (Top) -->
+    <g>
+      <rect x="380" y="80" width="50" height="90" fill="rgba(217, 70, 239, 0.5)" stroke="rgba(217, 70, 239, 0.8)" stroke-width="2"/>
+      <circle cx="405" cy="110" r="8" fill="rgba(0, 255, 136, 0.5)" filter="url(#glow512)"/>
+      <rect x="380" y="80" width="50" height="90" fill="url(#pipeShadow512)" opacity="0.3"/>
+    </g>
+  </g>
+
+  <!-- Bottom pipe obstacles group -->
+  <g filter="url(#dropShadow512)">
+    <!-- Pipe 1 (Bottom) -->
+    <g>
+      <rect x="60" y="362" width="50" height="100" fill="rgba(217, 70, 239, 0.5)" stroke="rgba(217, 70, 239, 0.8)" stroke-width="2"/>
+      <circle cx="85" cy="397" r="8" fill="rgba(0, 255, 136, 0.5)" filter="url(#glow512)"/>
+      <rect x="60" y="362" width="50" height="100" fill="url(#pipeShadow512)" opacity="0.3"/>
+    </g>
+
+    <!-- Pipe 2 (Bottom) -->
+    <g>
+      <rect x="380" y="342" width="50" height="100" fill="rgba(217, 70, 239, 0.5)" stroke="rgba(217, 70, 239, 0.8)" stroke-width="2"/>
+      <circle cx="405" cy="377" r="8" fill="rgba(0, 255, 136, 0.5)" filter="url(#glow512)"/>
+      <rect x="380" y="342" width="50" height="100" fill="url(#pipeShadow512)" opacity="0.3"/>
+    </g>
+  </g>
+
+  <!-- Bird container -->
+  <g filter="url(#glow512)">
+    <!-- Bird body with shadow -->
+    <circle cx="256" cy="256" r="72" fill="url(#birdGradient512)" filter="url(#dropShadow512)"/>
+
+    <!-- Bird glow rings -->
+    <circle cx="256" cy="256" r="80" fill="none" stroke="rgba(0, 255, 136, 0.3)" stroke-width="3"/>
+    <circle cx="256" cy="256" r="88" fill="none" stroke="rgba(0, 255, 136, 0.1)" stroke-width="2" opacity="0.5"/>
+
+    <!-- Bird eyes -->
+    <circle cx="230" cy="240" r="12" fill="#000"/>
+    <circle cx="282" cy="240" r="12" fill="#000"/>
+
+    <!-- Bird pupils with shine -->
+    <circle cx="230" cy="240" r="6" fill="#FFF"/>
+    <circle cx="282" cy="240" r="6" fill="#FFF"/>
+    <circle cx="228" cy="238" r="2" fill="rgba(255, 255, 255, 0.5)"/>
+    <circle cx="280" cy="238" r="2" fill="rgba(255, 255, 255, 0.5)"/>
+
+    <!-- Bird beak -->
+    <path d="M 330 256 L 370 245 L 370 267 Z" fill="#FF6B35" filter="url(#dropShadow512)"/>
+    <path d="M 330 256 L 370 245 L 370 267 Z" fill="rgba(255, 107, 53, 0.4)"/>
+
+    <!-- Bird wing left -->
+    <ellipse cx="200" cy="245" rx="32" ry="20" fill="rgba(255, 107, 53, 0.6)" transform="rotate(-20 200 245)"/>
+    <ellipse cx="200" cy="245" rx="32" ry="20" fill="rgba(255, 107, 53, 0.2)" transform="rotate(-20 200 245)" opacity="0.5"/>
+
+    <!-- Bird wing right -->
+    <ellipse cx="312" cy="245" rx="32" ry="20" fill="rgba(255, 107, 53, 0.6)" transform="rotate(20 312 245)"/>
+    <ellipse cx="312" cy="245" rx="32" ry="20" fill="rgba(255, 107, 53, 0.2)" transform="rotate(20 312 245)" opacity="0.5"/>
+
+    <!-- Bird wing details -->
+    <g opacity="0.4" stroke="rgba(255, 107, 53, 0.8)" stroke-width="1" fill="none">
+      <path d="M 190 235 Q 200 225 215 235"/>
+      <path d="M 190 245 Q 200 235 215 245"/>
+      <path d="M 190 255 Q 200 245 215 255"/>
+      <path d="M 297 235 Q 312 225 327 235"/>
+      <path d="M 297 245 Q 312 235 327 245"/>
+      <path d="M 297 255 Q 312 245 327 255"/>
+    </g>
+
+    <!-- Chest highlight -->
+    <ellipse cx="256" cy="280" rx="30" ry="20" fill="rgba(255, 255, 255, 0.1)"/>
+  </g>
+
+  <!-- Decorative neon elements -->
+  <g filter="url(#glow512)" opacity="0.6">
+    <circle cx="80" cy="180" r="6" fill="rgba(0, 255, 136, 0.8)"/>
+    <circle cx="430" cy="320" r="6" fill="rgba(217, 70, 239, 0.8)"/>
+    <circle cx="450" cy="150" r="4" fill="rgba(14, 165, 233, 0.8)"/>
+    <circle cx="100" cy="400" r="4" fill="rgba(14, 165, 233, 0.8)"/>
+  </g>
+
+  <!-- Corner accents (top-left) -->
+  <g opacity="0.4" stroke="rgba(0, 255, 136, 0.6)" stroke-width="3" stroke-linecap="round">
+    <line x1="10" y1="10" x2="80" y2="10"/>
+    <line x1="10" y1="10" x2="10" y2="80"/>
+  </g>
+
+  <!-- Corner accents (bottom-right) -->
+  <g opacity="0.4" stroke="rgba(217, 70, 239, 0.6)" stroke-width="3" stroke-linecap="round">
+    <line x1="502" y1="502" x2="432" y2="502"/>
+    <line x1="502" y1="502" x2="502" y2="432"/>
+  </g>
+</svg>

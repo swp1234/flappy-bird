@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f0f23">
+    <meta name="description" content="Sky Flap - A classic flappy bird game. Tap to fly and avoid obstacles. Challenge your friends!">
+
+    <!-- SEO & Structured Data -->
+    <meta name="keywords" content="flappy bird, casual game, arcade game, mobile game, web game">
+    <meta name="author" content="dopabrain.com">
+
+    <!-- Open Graph (Social Sharing) -->
+    <meta property="og:title" content="Sky Flap - Casual Arcade Game">
+    <meta property="og:description" content="Tap to fly and avoid obstacles. How far can you go? Play now!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dopabrain.com/games/sky-flap/">
+    <meta property="og:image" content="https://dopabrain.com/games/sky-flap/icon-512.svg">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sky Flap - Casual Arcade Game">
+    <meta name="twitter:description" content="Tap to fly and avoid obstacles. How far can you go?">
+    <meta name="twitter:image" content="https://dopabrain.com/games/sky-flap/icon-512.svg">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon-192.svg">
+    <link rel="apple-touch-icon" href="icon-192.svg">
+
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J8GSWM40TV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-J8GSWM40TV');
+    </script>
+
+    <!-- AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3600813755953882"
+        crossorigin="anonymous"></script>
+
+    <title data-i18n="app.title">Sky Flap - Casual Arcade Game</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <button id="lang-toggle" class="lang-toggle" aria-label="Toggle language menu">🌐</button>
+        <div id="lang-menu" class="lang-menu hidden">
+            <button class="lang-option" data-lang="ko">🇰🇷 한국어</button>
+            <button class="lang-option" data-lang="en">🇺🇸 English</button>
+            <button class="lang-option" data-lang="ja">🇯🇵 日本語</button>
+            <button class="lang-option" data-lang="zh">🇨🇳 中文</button>
+            <button class="lang-option" data-lang="es">🇪🇸 Español</button>
+            <button class="lang-option" data-lang="pt">🇧🇷 Português</button>
+            <button class="lang-option" data-lang="id">🇮🇩 Bahasa Indonesia</button>
+            <button class="lang-option" data-lang="tr">🇹🇷 Türkçe</button>
+            <button class="lang-option" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
+            <button class="lang-option" data-lang="hi">🇮🇳 हिन्दी</button>
+            <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
+        </div>
+    </div>
+
+    <!-- Top Banner Ad -->
+    <div class="ad-container ad-top">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-3600813755953882"
+             data-ad-slot="1234567890"
+             data-ad-format="horizontal"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-wrapper">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen start-screen active">
+            <div class="start-content">
+                <div class="game-title">
+                    <h1 data-i18n="app.title">Sky Flap</h1>
+                    <p class="subtitle" data-i18n="game.subtitle">Tap to Fly</p>
+                </div>
+                <div class="bird-demo">
+                    <svg viewBox="0 0 50 50" class="bird-icon">
+                        <circle cx="25" cy="25" r="12" fill="#FFD700"/>
+                        <path d="M 20 22 Q 17 20 15 22" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        <path d="M 30 22 Q 33 20 35 22" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        <circle cx="19" cy="24" r="1.5" fill="#000"/>
+                        <circle cx="31" cy="24" r="1.5" fill="#000"/>
+                        <path d="M 25 28 L 22 32 L 25 31 L 28 32 Z" fill="#FF6B35"/>
+                    </svg>
+                </div>
+                <div class="instructions">
+                    <p data-i18n="game.instruction1">Tap or Click to make the bird fly</p>
+                    <p data-i18n="game.instruction2">Avoid the pipes and obstacles</p>
+                    <p data-i18n="game.instruction3">Difficulty increases as your score grows</p>
+                </div>
+                <button id="start-btn" class="btn btn-primary" data-i18n="game.start">Start Game</button>
+                <div class="best-score">
+                    <span data-i18n="game.bestScore">Best Score:</span>
+                    <span id="best-score-display">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen game-screen">
+            <div class="game-header">
+                <div class="score-display">
+                    <span data-i18n="game.score">Score:</span>
+                    <span id="current-score">0</span>
+                </div>
+                <div class="level-display">
+                    <span data-i18n="game.level">Level:</span>
+                    <span id="current-level">1</span>
+                </div>
+            </div>
+            <canvas id="game-canvas"></canvas>
+            <div id="pause-indicator" class="pause-indicator">
+                <span data-i18n="game.paused">PAUSED</span>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameover-screen" class="screen gameover-screen">
+            <div class="gameover-content">
+                <h2 data-i18n="game.gameOver">Game Over</h2>
+                <div class="score-summary">
+                    <div class="score-item">
+                        <span data-i18n="game.score">Score:</span>
+                        <span id="final-score">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span data-i18n="game.bestScore">Best Score:</span>
+                        <span id="final-best-score">0</span>
+                    </div>
+                    <div class="score-item" id="new-record-item" class="hidden">
+                        <span class="new-record" data-i18n="game.newRecord">New Record!</span>
+                    </div>
+                </div>
+                <div class="share-section">
+                    <button id="share-btn" class="btn btn-secondary" data-i18n="game.share">Share Result</button>
+                </div>
+                <button id="restart-btn" class="btn btn-primary" data-i18n="game.restart">Play Again</button>
+                <button id="home-btn" class="btn btn-secondary" data-i18n="game.home">Home</button>
+            </div>
+
+            <!-- Interstitial Ad (Game Over) -->
+            <div class="ad-container ad-interstitial">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-3600813755953882"
+                     data-ad-slot="9876543210"
+                     data-ad-format="rectangle"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!-- Structured Data (VideoGame) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org/",
+        "@type": "VideoGame",
+        "name": "Sky Flap",
+        "description": "A casual arcade flappy bird game. Tap to fly and avoid obstacles.",
+        "url": "https://dopabrain.com/games/sky-flap/",
+        "image": "https://dopabrain.com/games/sky-flap/icon-512.svg",
+        "applicationCategory": "Game",
+        "gamePlayMode": "SinglePlayer",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "dopabrain.com"
+        }
+    }
+    </script>
+
+    <!-- Scripts -->
+    <script src="js/i18n.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

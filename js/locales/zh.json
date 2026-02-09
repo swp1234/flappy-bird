@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "天空拍打 - 休闲街机游戏",
+    "description": "点击飞行,躲避障碍物,挑战自己!你能飞多远?"
+  },
+  "game": {
+    "title": "天空拍打",
+    "subtitle": "点击飞行",
+    "instruction1": "点击或轻触使鸟飞起来",
+    "instruction2": "躲避管道和障碍物",
+    "instruction3": "分数越高难度越大",
+    "start": "开始游戏",
+    "restart": "再玩一次",
+    "home": "主页",
+    "share": "分享结果",
+    "score": "分数:",
+    "bestScore": "最高分:",
+    "level": "关卡:",
+    "gameOver": "游戏结束",
+    "newRecord": "新记录!",
+    "paused": "已暂停"
+  }
+}

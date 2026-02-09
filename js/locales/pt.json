@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Sky Flap - Jogo Arcade Casual",
+    "description": "Toque para voar, evite obstáculos e desafie-se! Quão longe você consegue chegar?"
+  },
+  "game": {
+    "title": "Sky Flap",
+    "subtitle": "Toque para Voar",
+    "instruction1": "Toque ou clique para fazer o pássaro voar",
+    "instruction2": "Evite os canos e obstáculos",
+    "instruction3": "A dificuldade aumenta conforme sua pontuação cresce",
+    "start": "Iniciar Jogo",
+    "restart": "Jogar Novamente",
+    "home": "Início",
+    "share": "Compartilhar Resultado",
+    "score": "Pontuação:",
+    "bestScore": "Melhor Pontuação:",
+    "level": "Nível:",
+    "gameOver": "Fim de Jogo",
+    "newRecord": "Novo Recorde!",
+    "paused": "PAUSADO"
+  }
+}

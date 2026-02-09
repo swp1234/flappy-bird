@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Sky Flap - Casual Arcade Game",
+    "description": "Tap to fly, avoid obstacles, and challenge yourself! How far can you go?"
+  },
+  "game": {
+    "title": "Sky Flap",
+    "subtitle": "Tap to Fly",
+    "instruction1": "Tap or click to make the bird fly",
+    "instruction2": "Avoid the pipes and obstacles",
+    "instruction3": "Difficulty increases as your score grows",
+    "start": "Start Game",
+    "restart": "Play Again",
+    "home": "Home",
+    "share": "Share Result",
+    "score": "Score:",
+    "bestScore": "Best Score:",
+    "level": "Level:",
+    "gameOver": "Game Over",
+    "newRecord": "New Record!",
+    "paused": "PAUSED"
+  }
+}

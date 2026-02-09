@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Sky Flap - Permainan Arcade Kasual",
+    "description": "Ketuk untuk terbang, hindari rintangan, dan tantang diri Anda! Seberapa jauh Anda bisa terbang?"
+  },
+  "game": {
+    "title": "Sky Flap",
+    "subtitle": "Ketuk untuk Terbang",
+    "instruction1": "Ketuk atau klik untuk membuat burung terbang",
+    "instruction2": "Hindari pipa dan rintangan",
+    "instruction3": "Kesulitan meningkat seiring pertumbuhan skor Anda",
+    "start": "Mulai Permainan",
+    "restart": "Main Lagi",
+    "home": "Beranda",
+    "share": "Bagikan Hasil",
+    "score": "Skor:",
+    "bestScore": "Skor Terbaik:",
+    "level": "Level:",
+    "gameOver": "Permainan Berakhir",
+    "newRecord": "Rekor Baru!",
+    "paused": "DIJEDA"
+  }
+}
