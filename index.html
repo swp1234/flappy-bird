@@ -45,6 +45,11 @@
     <link rel="icon" type="image/svg+xml" href="icon-192.svg">
     <link rel="apple-touch-icon" href="icon-192.svg">
 
+    <!-- Preconnect to external services -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
     <!-- Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J8GSWM40TV"></script>
     <script>
@@ -91,6 +96,37 @@
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="recommendations-section">
+        <div class="rec-title" data-i18n="recommendations.title">이것도 해보세요</div>
+        <div class="rec-grid">
+            <a href="https://dopabrain.com/puzzle-2048/" class="rec-card" target="_blank">
+                <span class="rec-icon">🔢</span>
+                <span class="rec-info">
+                    <span class="rec-name">2048 퍼즐</span>
+                </span>
+            </a>
+            <a href="https://dopabrain.com/idle-clicker/" class="rec-card" target="_blank">
+                <span class="rec-icon">⚔️</span>
+                <span class="rec-info">
+                    <span class="rec-name">던전 클리커</span>
+                </span>
+            </a>
+            <a href="https://dopabrain.com/block-puzzle/" class="rec-card" target="_blank">
+                <span class="rec-icon">🧩</span>
+                <span class="rec-info">
+                    <span class="rec-name">블록 퍼즐</span>
+                </span>
+            </a>
+            <a href="https://dopabrain.com/brick-breaker/" class="rec-card" target="_blank">
+                <span class="rec-icon">🧱</span>
+                <span class="rec-info">
+                    <span class="rec-name">벽돌 깨기</span>
+                </span>
+            </a>
+        </div>
     </div>
 
     <!-- Game Container -->
@@ -204,9 +240,9 @@
     }
     </script>
 
-    <!-- Scripts -->
-    <script src="js/i18n.js"></script>
-    <script src="js/app.js"></script>
+    <!-- Scripts with deferred loading for non-critical -->
+    <script defer src="js/i18n.js"></script>
+    <script defer src="js/app.js"></script>
 
     <!-- Service Worker Registration -->
     <script>
