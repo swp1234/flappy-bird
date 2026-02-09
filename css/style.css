@@ -614,9 +614,49 @@ body {
 }
 
 /* Print Styles */
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark, var(--bg-primary, var(--background, #0f0f23)));
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e74c3c;
+    border-radius: 5px;
+    border: 2px solid var(--bg-dark, var(--bg-primary, var(--background, #0f0f23)));
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #eb6f63;
+    opacity: 0.8;
+}
+
+/* Selection Color */
+::selection {
+    background: #e74c3c;
+    color: white;
+}
+
+::-moz-selection {
+    background: #e74c3c;
+    color: white;
+}
+
 @media print {
     .ad-container,
     .language-selector {
         display: none;
     }
+}
+
+/* Focus Visible - Accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible {
+    outline: 3px solid #667eea;
+    outline-offset: 2px;
 }
