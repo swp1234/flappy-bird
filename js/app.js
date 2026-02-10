@@ -27,7 +27,7 @@ class SkyFlapGame {
         };
 
         // Game Properties
-        this.pipeGap = 120;
+        this.pipeGap = 140;
         this.pipeWidth = 50;
         this.pipesSpeed = 4;
         this.pipeSpacing = 180;
@@ -287,7 +287,7 @@ class SkyFlapGame {
         if (newLevel !== this.level) {
             this.level = newLevel;
             this.difficultyMultiplier = 1 + (this.level - 1) * 0.1;
-            this.pipeGap = Math.max(100, 120 - (this.level - 1) * 5);
+            this.pipeGap = Math.max(110, 140 - (this.level - 1) * 5);
         }
     }
 
