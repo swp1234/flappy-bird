@@ -207,14 +207,6 @@ class I18n {
     }
 }
 
-// Create global i18n instance
+// Create global i18n instance (do NOT auto-initialize; app.js will call initialize())
 const i18n = new I18n();
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        i18n.initialize().catch(err => console.error('i18n initialization error:', err));
-    });
-} else {
-    i18n.initialize().catch(err => console.error('i18n initialization error:', err));
-}
+window.i18n = i18n;

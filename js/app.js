@@ -551,16 +551,43 @@ class SkyFlapGame {
     }
 }
 
-// Initialize game when DOM is ready
+// Initialize game when DOM is ready (await i18n first)
 let game;
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        game = new SkyFlapGame();
-        initSoundToggle();
-    });
-} else {
+
+async function initApp() {
+    // Initialize i18n before creating the game so translations are loaded
+    try {
+        if (window.i18n && window.i18n.initialize) {
+            await window.i18n.initialize();
+        }
+    } catch (e) {
+        console.warn('i18n init failed, continuing without translations:', e);
+    }
+
     game = new SkyFlapGame();
     initSoundToggle();
+
+    // Hide loader if present
+    const loader = document.getElementById('app-loader');
+    if (loader) {
+        loader.classList.add('hidden');
+        setTimeout(() => loader.remove(), 300);
+    }
+}
+
+// Failsafe: hide loader after 5s even if init stalls
+setTimeout(() => {
+    const loader = document.getElementById('app-loader');
+    if (loader) {
+        loader.classList.add('hidden');
+        setTimeout(() => loader.remove(), 300);
+    }
+}, 5000);
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => initApp());
+} else {
+    initApp();
 }
 
 // Sound toggle functionality
