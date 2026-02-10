@@ -259,9 +259,11 @@ class SkyFlapGame {
     }
 
     updatePipes() {
-        // Move existing pipes
+        const speed = this.pipesSpeed * this.difficultyMultiplier;
+
+        // Move existing pipes left
         for (let i = this.pipes.length - 1; i >= 0; i--) {
-            this.pipes[i].x -= this.pipesSpeed * this.difficultyMultiplier;
+            this.pipes[i].x -= speed;
 
             // Check if pipe has passed the bird (score point)
             if (!this.pipes[i].scored && this.pipes[i].x + this.pipeWidth < this.bird.x) {
@@ -269,7 +271,6 @@ class SkyFlapGame {
                 this.score++;
                 this.playSound('score');
 
-                // Trigger ad every 5 points
                 if (this.score % 5 === 0) {
                     this.showInterstitialAd();
                 }
@@ -281,7 +282,10 @@ class SkyFlapGame {
             }
         }
 
-        // Generate new pipes
+        // Scroll spawn point left with the world
+        this.nextPipeX -= speed;
+
+        // Generate new pipe when spawn point enters the view
         if (this.nextPipeX < this.canvas.width) {
             const gapY = Math.random() * (this.canvas.height - this.pipeGap - 100) + 50;
             this.pipes.push({
@@ -289,7 +293,7 @@ class SkyFlapGame {
                 gapY: gapY,
                 scored: false
             });
-            this.nextPipeX += this.pipeSpacing * this.difficultyMultiplier;
+            this.nextPipeX += this.pipeSpacing;
         }
     }
 
@@ -352,9 +356,8 @@ class SkyFlapGame {
     }
 
     draw() {
-        // Clear canvas
-        this.ctx.fillStyle = 'rgba(15, 15, 35, 0.1)';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        // Clear canvas fully each frame
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Draw grid background (subtle)
         this.drawGrid();
