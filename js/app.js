@@ -4,6 +4,18 @@ class SkyFlapGame {
         // Canvas Setup
         this.canvas = document.getElementById('game-canvas');
         this.ctx = this.canvas.getContext('2d');
+
+        // Bird Properties (must be before resizeCanvas which sets bird position)
+        this.bird = {
+            x: 0,
+            y: 0,
+            radius: 12,
+            velocityY: 0,
+            gravity: 0.6,
+            flapPower: -12,
+            maxVelocity: 15
+        };
+
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
 
@@ -14,17 +26,6 @@ class SkyFlapGame {
         this.level = 1;
         this.gameStartTime = 0;
         this.isPaused = false;
-
-        // Bird Properties
-        this.bird = {
-            x: 0,
-            y: 0,
-            radius: 12,
-            velocityY: 0,
-            gravity: 0.6,
-            flapPower: -12,
-            maxVelocity: 15
-        };
 
         // Game Properties
         this.pipeGap = 140;
