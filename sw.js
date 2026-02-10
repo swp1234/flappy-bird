@@ -1,5 +1,5 @@
 // Service Worker - Sky Flap PWA
-const CACHE_NAME = 'sky-flap-v1';
+const CACHE_NAME = 'sky-flap-v2';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -53,39 +53,22 @@ self.addEventListener('activate', event => {
     self.clients.claim();
 });
 
-// Fetch event - Serve from cache, fallback to network
+// Fetch event - Network first, fallback to cache
 self.addEventListener('fetch', event => {
-    // Skip non-GET requests
-    if (event.request.method !== 'GET') {
-        return;
-    }
+    if (event.request.method !== 'GET') return;
 
     event.respondWith(
-        caches.match(event.request).then(response => {
-            // Return cached response if available
-            if (response) {
-                return response;
-            }
-
-            // Otherwise, fetch from network
-            return fetch(event.request).then(response => {
-                // Don't cache non-successful responses
-                if (!response || response.status !== 200 || response.type === 'error') {
-                    return response;
-                }
-
-                // Clone the response
+        fetch(event.request).then(response => {
+            if (response && response.status === 200) {
                 const responseToCache = response.clone();
-
-                // Cache the response
                 caches.open(CACHE_NAME).then(cache => {
                     cache.put(event.request, responseToCache);
                 });
-
-                return response;
-            }).catch(() => {
-                // Offline fallback
-                return caches.match('/index.html');
+            }
+            return response;
+        }).catch(() => {
+            return caches.match(event.request).then(cached => {
+                return cached || caches.match('/index.html');
             });
         })
     );
