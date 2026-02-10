@@ -9,7 +9,7 @@ class SkyFlapGame {
         this.bird = {
             x: 0,
             y: 0,
-            radius: 12,
+            radius: 18,
             velocityY: 0,
             gravity: 0.6,
             flapPower: -12,
@@ -28,10 +28,10 @@ class SkyFlapGame {
         this.isPaused = false;
 
         // Game Properties
-        this.pipeGap = 140;
-        this.pipeWidth = 50;
+        this.pipeGap = 160;
+        this.pipeWidth = 60;
         this.pipesSpeed = 4;
-        this.pipeSpacing = 180;
+        this.pipeSpacing = 280;
         this.pipes = [];
         this.nextPipeX = this.canvas.width + 50;
         this.difficultyMultiplier = 1;
@@ -303,7 +303,7 @@ class SkyFlapGame {
         if (newLevel !== this.level) {
             this.level = newLevel;
             this.difficultyMultiplier = 1 + (this.level - 1) * 0.1;
-            this.pipeGap = Math.max(110, 140 - (this.level - 1) * 5);
+            this.pipeGap = Math.max(130, 160 - (this.level - 1) * 5);
         }
     }
 
@@ -356,11 +356,12 @@ class SkyFlapGame {
     }
 
     draw() {
-        // Clear canvas fully each frame
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // Solid dark background
+        this.ctx.fillStyle = '#0a0a1a';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw grid background (subtle)
-        this.drawGrid();
+        // Subtle star particles
+        this.drawStars();
 
         // Draw pipes
         this.drawPipes();
@@ -368,162 +369,141 @@ class SkyFlapGame {
         // Draw bird
         this.drawBird();
 
-        // Draw score indicator (during gameplay)
+        // Draw score (during gameplay)
         if (this.state === 'playing') {
-            this.drawGameInfo();
+            this.drawScore();
         }
     }
 
-    drawGrid() {
-        const gridSize = 40;
-        this.ctx.strokeStyle = 'rgba(102, 126, 234, 0.05)';
-        this.ctx.lineWidth = 1;
-
-        for (let x = 0; x < this.canvas.width; x += gridSize) {
-            this.ctx.beginPath();
-            this.ctx.moveTo(x, 0);
-            this.ctx.lineTo(x, this.canvas.height);
-            this.ctx.stroke();
+    drawStars() {
+        if (!this._stars) {
+            this._stars = [];
+            for (let i = 0; i < 60; i++) {
+                this._stars.push({
+                    x: Math.random() * this.canvas.width,
+                    y: Math.random() * this.canvas.height,
+                    r: Math.random() * 1.5 + 0.5,
+                    a: Math.random() * 0.5 + 0.1
+                });
+            }
         }
-
-        for (let y = 0; y < this.canvas.height; y += gridSize) {
+        this._stars.forEach(s => {
+            this.ctx.fillStyle = `rgba(255,255,255,${s.a})`;
             this.ctx.beginPath();
-            this.ctx.moveTo(0, y);
-            this.ctx.lineTo(this.canvas.width, y);
-            this.ctx.stroke();
-        }
+            this.ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            this.ctx.fill();
+        });
     }
 
     drawPipes() {
         for (const pipe of this.pipes) {
-            const gradient = this.ctx.createLinearGradient(
-                pipe.x, 0, pipe.x + this.pipeWidth, 0
-            );
-            gradient.addColorStop(0, 'rgba(217, 70, 239, 0.8)');
-            gradient.addColorStop(1, 'rgba(217, 70, 239, 0.4)');
+            const w = this.pipeWidth;
+            const capH = 20;
+            const capExtra = 6;
 
-            // Top pipe
-            this.ctx.fillStyle = gradient;
-            this.ctx.fillRect(pipe.x, 0, this.pipeWidth, pipe.gapY);
+            // Top pipe body
+            const topGrad = this.ctx.createLinearGradient(pipe.x, 0, pipe.x + w, 0);
+            topGrad.addColorStop(0, '#2ecc71');
+            topGrad.addColorStop(0.5, '#27ae60');
+            topGrad.addColorStop(1, '#1e8449');
+            this.ctx.fillStyle = topGrad;
+            this.ctx.fillRect(pipe.x, 0, w, pipe.gapY - capH);
 
-            // Neon glow effect
-            this.ctx.strokeStyle = 'rgba(217, 70, 239, 0.6)';
-            this.ctx.lineWidth = 2;
-            this.ctx.strokeRect(pipe.x, 0, this.pipeWidth, pipe.gapY);
+            // Top pipe cap
+            this.ctx.fillStyle = '#2ecc71';
+            this.ctx.beginPath();
+            this.ctx.roundRect(pipe.x - capExtra, pipe.gapY - capH, w + capExtra * 2, capH, [0, 0, 4, 4]);
+            this.ctx.fill();
+
+            // Top pipe highlight
+            this.ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            this.ctx.fillRect(pipe.x + 4, 0, 6, pipe.gapY - capH);
 
             // Bottom pipe
-            const bottomPipeY = pipe.gapY + this.pipeGap;
-            const bottomPipeHeight = this.canvas.height - bottomPipeY;
-            this.ctx.fillStyle = gradient;
-            this.ctx.fillRect(pipe.x, bottomPipeY, this.pipeWidth, bottomPipeHeight);
+            const bottomY = pipe.gapY + this.pipeGap;
+            const bottomH = this.canvas.height - bottomY;
+            this.ctx.fillStyle = topGrad;
+            this.ctx.fillRect(pipe.x, bottomY + capH, w, bottomH - capH);
 
-            // Neon glow effect
-            this.ctx.strokeStyle = 'rgba(217, 70, 239, 0.6)';
-            this.ctx.lineWidth = 2;
-            this.ctx.strokeRect(pipe.x, bottomPipeY, this.pipeWidth, bottomPipeHeight);
+            // Bottom pipe cap
+            this.ctx.fillStyle = '#2ecc71';
+            this.ctx.beginPath();
+            this.ctx.roundRect(pipe.x - capExtra, bottomY, w + capExtra * 2, capH, [4, 4, 0, 0]);
+            this.ctx.fill();
 
-            // Pipe ornaments (decorative circles)
-            this.drawPipeOrnaments(pipe.x, pipe.gapY);
-            this.drawPipeOrnaments(pipe.x, bottomPipeY);
+            // Bottom pipe highlight
+            this.ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            this.ctx.fillRect(pipe.x + 4, bottomY + capH, 6, bottomH - capH);
         }
-    }
-
-    drawPipeOrnaments(x, y) {
-        const ornamentRadius = 8;
-        this.ctx.fillStyle = 'rgba(0, 255, 136, 0.3)';
-        this.ctx.beginPath();
-        this.ctx.arc(x + this.pipeWidth / 2, y + 15, ornamentRadius, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        // Glow
-        this.ctx.strokeStyle = 'rgba(0, 255, 136, 0.6)';
-        this.ctx.lineWidth = 1;
-        this.ctx.beginPath();
-        this.ctx.arc(x + this.pipeWidth / 2, y + 15, ornamentRadius, 0, Math.PI * 2);
-        this.ctx.stroke();
     }
 
     drawBird() {
         const x = this.bird.x;
         const y = this.bird.y;
-        const radius = this.bird.radius;
+        const r = this.bird.radius;
 
-        // Bird body (yellow gradient)
-        const bodyGradient = this.ctx.createRadialGradient(x - 3, y - 3, 0, x, y, radius);
-        bodyGradient.addColorStop(0, '#FFD700');
-        bodyGradient.addColorStop(1, '#FFA500');
+        this.ctx.save();
+        this.ctx.translate(x, y);
 
-        this.ctx.fillStyle = bodyGradient;
+        // Tilt based on velocity
+        const tilt = Math.max(-0.5, Math.min(0.5, this.bird.velocityY * 0.04));
+        this.ctx.rotate(tilt);
+
+        // Shadow
+        this.ctx.fillStyle = 'rgba(0,0,0,0.2)';
         this.ctx.beginPath();
-        this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+        this.ctx.ellipse(2, 3, r, r * 0.85, 0, 0, Math.PI * 2);
         this.ctx.fill();
 
-        // Neon glow
-        this.ctx.strokeStyle = 'rgba(0, 255, 136, 0.8)';
-        this.ctx.lineWidth = 2;
+        // Body
+        const bodyGrad = this.ctx.createRadialGradient(-3, -3, 0, 0, 0, r);
+        bodyGrad.addColorStop(0, '#FFE066');
+        bodyGrad.addColorStop(1, '#F0A500');
+        this.ctx.fillStyle = bodyGrad;
         this.ctx.beginPath();
-        this.ctx.arc(x, y, radius + 2, 0, Math.PI * 2);
-        this.ctx.stroke();
-
-        // Eyes
-        this.ctx.fillStyle = '#000';
-        const eyeRadius = 3;
-        this.ctx.beginPath();
-        this.ctx.arc(x - 4, y - 2, eyeRadius, 0, Math.PI * 2);
+        this.ctx.arc(0, 0, r, 0, Math.PI * 2);
         this.ctx.fill();
 
+        // Wing
+        const wingY = Math.sin(Date.now() * 0.01) * 3;
+        this.ctx.fillStyle = '#E8920B';
         this.ctx.beginPath();
-        this.ctx.arc(x + 4, y - 2, eyeRadius, 0, Math.PI * 2);
+        this.ctx.ellipse(-r * 0.4, wingY, r * 0.55, r * 0.35, -0.3, 0, Math.PI * 2);
         this.ctx.fill();
 
-        // Pupils (look at direction of movement)
-        this.ctx.fillStyle = '#FFF';
-        const pupilRadius = 1.5;
-        const pupilOffset = this.bird.velocityY > 0 ? 1 : -1;
-
+        // Eye white
+        this.ctx.fillStyle = '#fff';
         this.ctx.beginPath();
-        this.ctx.arc(x - 4, y - 2 + pupilOffset, pupilRadius, 0, Math.PI * 2);
+        this.ctx.arc(r * 0.3, -r * 0.2, r * 0.3, 0, Math.PI * 2);
         this.ctx.fill();
 
+        // Pupil
+        this.ctx.fillStyle = '#111';
         this.ctx.beginPath();
-        this.ctx.arc(x + 4, y - 2 + pupilOffset, pupilRadius, 0, Math.PI * 2);
+        this.ctx.arc(r * 0.38, -r * 0.15, r * 0.15, 0, Math.PI * 2);
         this.ctx.fill();
 
         // Beak
-        this.ctx.fillStyle = '#FF6B35';
+        this.ctx.fillStyle = '#E74C3C';
         this.ctx.beginPath();
-        this.ctx.moveTo(x + radius, y);
-        this.ctx.lineTo(x + radius + 8, y - 3);
-        this.ctx.lineTo(x + radius + 8, y + 3);
+        this.ctx.moveTo(r * 0.7, 0);
+        this.ctx.lineTo(r * 1.3, -r * 0.15);
+        this.ctx.lineTo(r * 1.3, r * 0.2);
         this.ctx.closePath();
-        this.ctx.fill();
-
-        // Wings (flapping animation)
-        const wingAngle = this.bird.velocityY * 0.05;
-        this.drawWing(x - radius + 2, y, wingAngle, true);
-        this.drawWing(x + radius - 2, y, wingAngle, false);
-    }
-
-    drawWing(x, y, angle, isLeft) {
-        this.ctx.save();
-        this.ctx.translate(x, y);
-        this.ctx.rotate(isLeft ? -angle : angle);
-
-        this.ctx.fillStyle = 'rgba(255, 107, 53, 0.6)';
-        this.ctx.beginPath();
-        this.ctx.ellipse(0, -4, 8, 4, 0, 0, Math.PI * 2);
         this.ctx.fill();
 
         this.ctx.restore();
     }
 
-    drawGameInfo() {
-        // Draw current score indicator in corner
-        const timeElapsed = Math.floor((Date.now() - this.gameStartTime) / 1000);
-
-        this.ctx.fillStyle = 'rgba(0, 255, 136, 0.8)';
-        this.ctx.font = 'bold 14px sans-serif';
-        this.ctx.fillText(`Time: ${timeElapsed}s`, 10, 30);
+    drawScore() {
+        this.ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        this.ctx.font = 'bold 48px -apple-system, sans-serif';
+        this.ctx.textAlign = 'center';
+        this.ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+        this.ctx.lineWidth = 4;
+        this.ctx.strokeText(this.score, this.canvas.width / 2, 60);
+        this.ctx.fillText(this.score, this.canvas.width / 2, 60);
+        this.ctx.textAlign = 'start';
     }
 
     showScreen(screenName) {
