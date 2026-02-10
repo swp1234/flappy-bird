@@ -82,19 +82,27 @@ class SkyFlapGame {
         this.homeBtn.addEventListener('click', () => this.goHome());
         this.shareBtn.addEventListener('click', () => this.shareResult());
 
-        // Game Input (Bird Control)
-        document.addEventListener('click', (e) => {
+        // Game Input (Bird Control) - only on game canvas area
+        const gameCanvas = this.canvas;
+        gameCanvas.addEventListener('click', (e) => {
             if (this.state === 'playing' && !this.isPaused) {
                 this.flap();
             }
         });
 
-        document.addEventListener('touchstart', (e) => {
+        gameCanvas.addEventListener('touchstart', (e) => {
             if (this.state === 'playing' && !this.isPaused) {
                 this.flap();
                 e.preventDefault();
             }
         }, { passive: false });
+
+        // Also allow clicking anywhere on game screen (not just canvas)
+        this.gameScreen.addEventListener('click', (e) => {
+            if (this.state === 'playing' && !this.isPaused && e.target !== gameCanvas) {
+                this.flap();
+            }
+        });
 
         // Keyboard Control
         document.addEventListener('keydown', (e) => {
@@ -170,6 +178,10 @@ class SkyFlapGame {
     }
 
     startGame() {
+        this.showScreen('game');
+        // Resize canvas AFTER screen is visible (prevents height=0 bug)
+        this.resizeCanvas();
+
         this.score = 0;
         this.level = 1;
         this.difficultyMultiplier = 1;
@@ -177,11 +189,10 @@ class SkyFlapGame {
         this.nextPipeX = this.canvas.width + 50;
         this.bird.velocityY = 0;
         this.bird.y = this.canvas.height / 2;
+        this.bird.x = this.canvas.width * 0.2;
         this.gameStartTime = Date.now();
         this.isPaused = false;
         this.state = 'playing';
-
-        this.showScreen('game');
     }
 
     flap() {
@@ -225,7 +236,7 @@ class SkyFlapGame {
     }
 
     update() {
-        if (this.isPaused) return;
+        if (this.state !== 'playing' || this.isPaused) return;
 
         // Update Bird Physics
         this.bird.velocityY += this.bird.gravity;
