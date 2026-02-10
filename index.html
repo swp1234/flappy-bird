@@ -101,44 +101,31 @@
         </script>
     </div>
 
-    <!-- Recommendations -->
-    <div class="recommendations-section">
-        <div class="rec-title" data-i18n="recommendations.title">이것도 해보세요</div>
-        <div class="rec-grid">
-
-                    <a href="https://dopabrain.com/idle-clicker/" class="rec-card" target="_blank">
-                        <span class="rec-icon">⚔️</span>
-                        <span class="rec-info">
-                            <span class="rec-name">던전 클리커</span>
-                        </span>
-                    </a>
-                    <a href="https://dopabrain.com/zigzag-runner/" class="rec-card" target="_blank">
-                        <span class="rec-icon">🏃</span>
-                        <span class="rec-info">
-                            <span class="rec-name">지그재그 러너</span>
-                        </span>
-                    </a>
-                    <a href="https://dopabrain.com/stack-tower/" class="rec-card" target="_blank">
-                        <span class="rec-icon">📦</span>
-                        <span class="rec-info">
-                            <span class="rec-name">스택 타워</span>
-                        </span>
-                    </a>
-                    <a href="https://dopabrain.com/sky-runner/" class="rec-card" target="_blank">
-                        <span class="rec-icon">☁️</span>
-                        <span class="rec-info">
-                            <span class="rec-name">스카이 러너</span>
-                        </span>
-                    </a>
-                    <a href="https://dopabrain.com/past-life/" class="rec-card" target="_blank">
-                        <span class="rec-icon">✨</span>
-                        <span class="rec-info">
-                            <span class="rec-name">전생 테스트</span>
-                        </span>
-                    </a>
-
-
+    <!-- Game Wrapper -->
+    <div class="game-wrapper">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen start-screen active">
+            <div class="start-content">
+                <div class="game-title">
+                    <h1 data-i18n="app.name">Sky Flap</h1>
+                    <p class="subtitle" data-i18n="app.subtitle">Casual Arcade Game</p>
                 </div>
+                <div class="bird-demo">
+                    <svg class="bird-icon" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="30" cy="30" r="20" fill="#FFD700"/>
+                        <circle cx="38" cy="25" r="4" fill="#333"/>
+                        <path d="M42 30 L55 28 L42 32Z" fill="#FF6B35"/>
+                        <path d="M15 25 Q5 20 10 35 Q15 40 20 35" fill="#667eea" opacity="0.8"/>
+                    </svg>
+                </div>
+                <div class="instructions">
+                    <p data-i18n="game.instruction">Tap or click to flap your wings and avoid the pipes!</p>
+                </div>
+                <div class="best-score-area">
+                    <span data-i18n="game.bestScore">Best Score:</span>
+                    <span id="best-score-display">0</span>
+                </div>
+                <button id="start-btn" class="btn btn-primary" data-i18n="game.start">Play</button>
             </div>
         </div>
 
@@ -173,7 +160,7 @@
                         <span data-i18n="game.bestScore">Best Score:</span>
                         <span id="final-best-score">0</span>
                     </div>
-                    <div class="score-item" id="new-record-item" class="hidden">
+                    <div class="score-item hidden" id="new-record-item">
                         <span class="new-record" data-i18n="game.newRecord">New Record!</span>
                     </div>
                 </div>
@@ -195,6 +182,29 @@
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
             </div>
+        </div>
+    </div>
+
+    <!-- Cross-promotion recommendations section -->
+    <div class="recommendations-section">
+        <div class="rec-title" data-i18n="recommendations.title">More Games</div>
+        <div class="rec-grid">
+            <a href="https://dopabrain.com/idle-clicker/" class="rec-card" target="_blank">
+                <span class="rec-icon">⚔️</span>
+                <span class="rec-info"><span class="rec-name">Idle Clicker</span></span>
+            </a>
+            <a href="https://dopabrain.com/zigzag-runner/" class="rec-card" target="_blank">
+                <span class="rec-icon">🏃</span>
+                <span class="rec-info"><span class="rec-name">Zigzag Runner</span></span>
+            </a>
+            <a href="https://dopabrain.com/stack-tower/" class="rec-card" target="_blank">
+                <span class="rec-icon">📦</span>
+                <span class="rec-info"><span class="rec-name">Stack Tower</span></span>
+            </a>
+            <a href="https://dopabrain.com/sky-runner/" class="rec-card" target="_blank">
+                <span class="rec-icon">☁️</span>
+                <span class="rec-info"><span class="rec-name">Sky Runner</span></span>
+            </a>
         </div>
     </div>
 
