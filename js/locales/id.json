@@ -19,5 +19,9 @@
     "gameOver": "Permainan Berakhir",
     "newRecord": "Rekor Baru!",
     "paused": "DIJEDA"
+  },
+  "nav": {
+    "relatedArticles": "📖 Artikel terkait",
+    "backHome": "← DopaBrain Beranda"
   }
 }

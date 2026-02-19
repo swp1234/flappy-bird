@@ -19,5 +19,9 @@
     "gameOver": "게임 오버",
     "newRecord": "신기록!",
     "paused": "일시정지됨"
+  },
+  "nav": {
+    "relatedArticles": "📖 관련 글",
+    "backHome": "← DopaBrain 홈"
   }
 }

@@ -19,5 +19,9 @@
     "gameOver": "ゲームオーバー",
     "newRecord": "新記録!",
     "paused": "一時停止"
+  },
+  "nav": {
+    "relatedArticles": "📖 関連記事",
+    "backHome": "← DopaBrain ホーム"
   }
 }

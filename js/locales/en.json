@@ -19,5 +19,9 @@
     "gameOver": "Game Over",
     "newRecord": "New Record!",
     "paused": "PAUSED"
+  },
+  "nav": {
+    "relatedArticles": "📖 Related Articles",
+    "backHome": "← DopaBrain Home"
   }
 }

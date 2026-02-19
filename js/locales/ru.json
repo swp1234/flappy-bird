@@ -19,5 +19,9 @@
     "gameOver": "Конец Игры",
     "newRecord": "Новый Рекорд!",
     "paused": "ПАУЗА"
+  },
+  "nav": {
+    "relatedArticles": "📖 Статьи",
+    "backHome": "← DopaBrain Главная"
   }
 }

@@ -19,5 +19,9 @@
     "gameOver": "游戏结束",
     "newRecord": "新记录!",
     "paused": "已暂停"
+  },
+  "nav": {
+    "relatedArticles": "📖 相关文章",
+    "backHome": "← DopaBrain 首页"
   }
 }

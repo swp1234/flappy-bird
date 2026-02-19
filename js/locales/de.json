@@ -19,5 +19,9 @@
     "gameOver": "Spielende",
     "newRecord": "Neuer Rekord!",
     "paused": "PAUSIERT"
+  },
+  "nav": {
+    "relatedArticles": "📖 Verwandte Artikel",
+    "backHome": "← DopaBrain Startseite"
   }
 }

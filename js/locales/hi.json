@@ -19,5 +19,9 @@
     "gameOver": "गेम समाप्त",
     "newRecord": "नया रिकॉर्ड!",
     "paused": "रुका हुआ"
+  },
+  "nav": {
+    "relatedArticles": "📖 संबंधित लेख",
+    "backHome": "← DopaBrain होम"
   }
 }

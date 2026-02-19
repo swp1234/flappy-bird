@@ -19,5 +19,9 @@
     "gameOver": "Oyun Bitti",
     "newRecord": "Yeni Rekor!",
     "paused": "DURDURULDU"
+  },
+  "nav": {
+    "relatedArticles": "📖 İlgili yazılar",
+    "backHome": "← DopaBrain Ana Sayfa"
   }
 }
