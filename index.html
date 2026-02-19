@@ -254,5 +254,14 @@
 
     <script src="/portal/js/cross-promo.js" defer></script>
     <script src="/portal/js/pwa-install.js" defer></script>
+    <style>
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </body>
 </html>
