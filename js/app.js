@@ -478,7 +478,11 @@ class SkyFlapGame {
             GameAchievements.report({ bestScore: this.bestScore, gamesPlayed: flappyGamesPlayed });
         }
 
-        this.showScreen('gameover');
+        if (typeof GameAds !== 'undefined') {
+            GameAds.showInterstitial({ onComplete: () => this.showScreen('gameover') });
+        } else {
+            this.showScreen('gameover');
+        }
     }
 
     draw() {
@@ -701,6 +705,7 @@ async function initApp() {
     }
 
     game = new SkyFlapGame();
+    if (typeof GameAds !== 'undefined') GameAds.init();
     if (typeof DailyStreak !== 'undefined') {
       DailyStreak.init({ gameId: 'flappy-bird', bestScoreKey: 'sky-flap-best-score', minTarget: 3 });
     }
