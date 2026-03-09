@@ -42,6 +42,12 @@ class SkyFlapGame {
         this.gameStartTime = 0;
         this.isPaused = false;
 
+        // Particles & Effects
+        this.particles = [];
+        this.floatingTexts = [];
+        this.shakeAmount = 0;
+        this.shakeDuration = 0;
+
         // Game Properties
         this.pipeGap = 160;
         this.pipeWidth = 60;
@@ -271,6 +277,9 @@ class SkyFlapGame {
 
         // Update Difficulty
         this.updateDifficulty();
+
+        // Update particles & effects
+        this.updateParticles();
     }
 
     updatePipes() {
@@ -285,6 +294,8 @@ class SkyFlapGame {
                 this.pipes[i].scored = true;
                 this.score++;
                 this.playSound('score');
+                this.spawnScoreParticles(this.bird.x, this.bird.y);
+                this.addFloatingText('+1', this.bird.x, this.bird.y - 30);
 
                 if (this.score % 5 === 0) {
                     this.showInterstitialAd();
@@ -350,9 +361,98 @@ class SkyFlapGame {
         }
     }
 
+    spawnScoreParticles(x, y) {
+        for (let i = 0; i < 8; i++) {
+            const angle = (Math.PI * 2 / 8) * i + Math.random() * 0.5;
+            this.particles.push({
+                x, y,
+                vx: Math.cos(angle) * (2 + Math.random() * 3),
+                vy: Math.sin(angle) * (2 + Math.random() * 3),
+                life: 1,
+                decay: 0.02 + Math.random() * 0.02,
+                radius: 3 + Math.random() * 3,
+                color: `hsl(${50 + Math.random() * 30}, 100%, 60%)`
+            });
+        }
+    }
+
+    spawnCollisionParticles(x, y) {
+        for (let i = 0; i < 15; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 1 + Math.random() * 5;
+            this.particles.push({
+                x, y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                life: 1,
+                decay: 0.015 + Math.random() * 0.02,
+                radius: 2 + Math.random() * 4,
+                color: `hsl(${0 + Math.random() * 30}, 100%, ${50 + Math.random() * 20}%)`
+            });
+        }
+    }
+
+    addFloatingText(text, x, y) {
+        this.floatingTexts.push({ text, x, y, life: 1, decay: 0.02 });
+    }
+
+    triggerShake(amount, duration) {
+        this.shakeAmount = amount;
+        this.shakeDuration = duration;
+    }
+
+    updateParticles() {
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+            const p = this.particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= p.decay;
+            p.vy += 0.1;
+            if (p.life <= 0) this.particles.splice(i, 1);
+        }
+        for (let i = this.floatingTexts.length - 1; i >= 0; i--) {
+            const ft = this.floatingTexts[i];
+            ft.y -= 1.5;
+            ft.life -= ft.decay;
+            if (ft.life <= 0) this.floatingTexts.splice(i, 1);
+        }
+        if (this.shakeDuration > 0) {
+            this.shakeDuration--;
+            if (this.shakeDuration <= 0) this.shakeAmount = 0;
+        }
+    }
+
+    drawParticles() {
+        for (const p of this.particles) {
+            this.ctx.globalAlpha = p.life;
+            this.ctx.fillStyle = p.color;
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.radius * p.life, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+        this.ctx.globalAlpha = 1;
+    }
+
+    drawFloatingTexts() {
+        for (const ft of this.floatingTexts) {
+            this.ctx.globalAlpha = ft.life;
+            this.ctx.fillStyle = '#FFE066';
+            this.ctx.font = 'bold 28px -apple-system, sans-serif';
+            this.ctx.textAlign = 'center';
+            this.ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+            this.ctx.lineWidth = 3;
+            this.ctx.strokeText(ft.text, ft.x, ft.y);
+            this.ctx.fillText(ft.text, ft.x, ft.y);
+            this.ctx.textAlign = 'start';
+        }
+        this.ctx.globalAlpha = 1;
+    }
+
     gameOver() {
         this.state = 'gameover';
         this.playSound('collision');
+        this.spawnCollisionParticles(this.bird.x, this.bird.y);
+        this.triggerShake(8, 15);
 
         // Update final scores
         this.finalScoreDisplay.textContent = this.score;
@@ -371,9 +471,18 @@ class SkyFlapGame {
     }
 
     draw() {
+        this.ctx.save();
+
+        // Screen shake offset
+        if (this.shakeAmount > 0) {
+            const sx = (Math.random() - 0.5) * this.shakeAmount;
+            const sy = (Math.random() - 0.5) * this.shakeAmount;
+            this.ctx.translate(sx, sy);
+        }
+
         // Solid dark background
         this.ctx.fillStyle = '#0a0a1a';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.fillRect(-10, -10, this.canvas.width + 20, this.canvas.height + 20);
 
         // Subtle star particles
         this.drawStars();
@@ -384,10 +493,16 @@ class SkyFlapGame {
         // Draw bird
         this.drawBird();
 
+        // Draw particles & floating texts
+        this.drawParticles();
+        this.drawFloatingTexts();
+
         // Draw score (during gameplay)
         if (this.state === 'playing') {
             this.drawScore();
         }
+
+        this.ctx.restore();
     }
 
     drawStars() {
