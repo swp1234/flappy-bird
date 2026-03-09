@@ -471,6 +471,13 @@ class SkyFlapGame {
 
         if (typeof DailyStreak !== 'undefined') DailyStreak.report(this.score);
 
+        // Track games played and report achievements
+        const flappyGamesPlayed = (parseInt(localStorage.getItem('flappy_gamesPlayed')) || 0) + 1;
+        localStorage.setItem('flappy_gamesPlayed', flappyGamesPlayed);
+        if (typeof GameAchievements !== 'undefined') {
+            GameAchievements.report({ bestScore: this.bestScore, gamesPlayed: flappyGamesPlayed });
+        }
+
         this.showScreen('gameover');
     }
 
@@ -697,6 +704,22 @@ async function initApp() {
     if (typeof DailyStreak !== 'undefined') {
       DailyStreak.init({ gameId: 'flappy-bird', bestScoreKey: 'sky-flap-best-score', minTarget: 3 });
     }
+
+    if (typeof GameAchievements !== 'undefined') {
+      GameAchievements.init({
+        gameId: 'flappy-bird',
+        defs: [
+          { id: 'score_5', stat: 'bestScore', target: 5, icon: '\uD83D\uDC26', name: 'Fledgling' },
+          { id: 'score_15', stat: 'bestScore', target: 15, icon: '\uD83D\uDC26', name: 'Aviator' },
+          { id: 'score_30', stat: 'bestScore', target: 30, icon: '\uD83D\uDC26', name: 'Sky Master' },
+          { id: 'score_50', stat: 'bestScore', target: 50, icon: '\uD83D\uDC26', name: 'Legend' },
+          { id: 'score_100', stat: 'bestScore', target: 100, icon: '\uD83E\uDD85', name: 'Eagle' },
+          { id: 'games_10', stat: 'gamesPlayed', target: 10, icon: '\uD83C\uDFAE', name: 'Persistent' },
+          { id: 'games_50', stat: 'gamesPlayed', target: 50, icon: '\uD83C\uDFAE', name: 'Dedicated' },
+        ]
+      });
+    }
+
     initSoundToggle();
 
     // Hide loader if present
