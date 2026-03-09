@@ -293,6 +293,7 @@ class SkyFlapGame {
             if (!this.pipes[i].scored && this.pipes[i].x + this.pipeWidth < this.bird.x) {
                 this.pipes[i].scored = true;
                 this.score++;
+                if (typeof Haptic !== 'undefined') Haptic.light();
                 this.playSound('score');
                 this.spawnScoreParticles(this.bird.x, this.bird.y);
                 this.addFloatingText('+1', this.bird.x, this.bird.y - 30);
@@ -449,6 +450,7 @@ class SkyFlapGame {
     }
 
     gameOver() {
+        if (typeof Haptic !== 'undefined') Haptic.heavy();
         this.state = 'gameover';
         this.playSound('collision');
         this.spawnCollisionParticles(this.bird.x, this.bird.y);
