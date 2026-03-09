@@ -200,6 +200,7 @@ class SkyFlapGame {
     }
 
     startGame() {
+        if (typeof GameAds !== 'undefined') GameAds.removeRewardButton('#gameover-screen');
         this.showScreen('game');
         // Resize canvas AFTER screen is visible (prevents height=0 bug)
         this.resizeCanvas();
@@ -478,10 +479,29 @@ class SkyFlapGame {
             GameAchievements.report({ bestScore: this.bestScore, gamesPlayed: flappyGamesPlayed });
         }
 
-        if (typeof GameAds !== 'undefined') {
-            GameAds.showInterstitial({ onComplete: () => this.showScreen('gameover') });
-        } else {
+        const showGameOverAndReward = () => {
             this.showScreen('gameover');
+            if (typeof GameAds !== 'undefined') {
+                GameAds.injectRewardButton({
+                    container: '#gameover-screen',
+                    label: 'Watch Ad for 2x Score',
+                    onReward: () => {
+                        this.score *= 2;
+                        this.finalScoreDisplay.textContent = this.score;
+                        if (this.score > this.bestScore) {
+                            this.bestScore = this.score;
+                            this.saveBestScore();
+                            this.finalBestScoreDisplay.textContent = this.bestScore;
+                        }
+                    }
+                });
+            }
+        };
+
+        if (typeof GameAds !== 'undefined') {
+            GameAds.showInterstitial({ onComplete: () => showGameOverAndReward() });
+        } else {
+            showGameOverAndReward();
         }
     }
 
