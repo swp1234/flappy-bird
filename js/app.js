@@ -467,6 +467,8 @@ class SkyFlapGame {
             this.newRecordItem.classList.add('hidden');
         }
 
+        if (typeof DailyStreak !== 'undefined') DailyStreak.report(this.score);
+
         this.showScreen('gameover');
     }
 
@@ -690,6 +692,9 @@ async function initApp() {
     }
 
     game = new SkyFlapGame();
+    if (typeof DailyStreak !== 'undefined') {
+      DailyStreak.init({ gameId: 'flappy-bird', bestScoreKey: 'sky-flap-best-score', minTarget: 3 });
+    }
     initSoundToggle();
 
     // Hide loader if present
