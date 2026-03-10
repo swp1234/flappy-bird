@@ -57,6 +57,27 @@ class SkyFlapGame {
         this.nextPipeX = this.canvas.width + 50;
         this.difficultyMultiplier = 1;
 
+        // Image Assets
+        this.imagesLoaded = 0;
+        this.imagesTotal = 3;
+        this.allImagesReady = false;
+        this.bgScrollX = 0;
+
+        this.birdImg = new Image();
+        this.birdImg.onload = () => this._onImageLoad();
+        this.birdImg.onerror = () => this._onImageLoad();
+        this.birdImg.src = 'assets/bird-opt.png';
+
+        this.pipeImg = new Image();
+        this.pipeImg.onload = () => this._onImageLoad();
+        this.pipeImg.onerror = () => this._onImageLoad();
+        this.pipeImg.src = 'assets/pipe-opt.png';
+
+        this.bgImg = new Image();
+        this.bgImg.onload = () => this._onImageLoad();
+        this.bgImg.onerror = () => this._onImageLoad();
+        this.bgImg.src = 'assets/bg-opt.jpg';
+
         // Audio Context
         this.audioContext = null;
         this.initAudio();
@@ -164,6 +185,13 @@ class SkyFlapGame {
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
         } catch (e) {
             console.warn('Web Audio API not supported');
+        }
+    }
+
+    _onImageLoad() {
+        this.imagesLoaded++;
+        if (this.imagesLoaded >= this.imagesTotal) {
+            this.allImagesReady = true;
         }
     }
 
@@ -515,12 +543,27 @@ class SkyFlapGame {
             this.ctx.translate(sx, sy);
         }
 
-        // Solid dark background
-        this.ctx.fillStyle = '#0a0a1a';
-        this.ctx.fillRect(-10, -10, this.canvas.width + 20, this.canvas.height + 20);
-
-        // Subtle star particles
-        this.drawStars();
+        // Background
+        if (this.bgImg.complete && this.bgImg.naturalWidth > 0) {
+            // Parallax scrolling background
+            if (this.state === 'playing' && !this.isPaused) {
+                this.bgScrollX -= 0.5;
+            }
+            const imgW = this.bgImg.naturalWidth;
+            const imgH = this.bgImg.naturalHeight;
+            const scale = Math.max(this.canvas.width / imgW, this.canvas.height / imgH);
+            const drawW = imgW * scale;
+            const drawH = imgH * scale;
+            const drawY = (this.canvas.height - drawH) / 2;
+            const offset = ((this.bgScrollX % drawW) + drawW) % drawW;
+            this.ctx.drawImage(this.bgImg, -offset, drawY, drawW, drawH);
+            this.ctx.drawImage(this.bgImg, -offset + drawW, drawY, drawW, drawH);
+        } else {
+            // Fallback solid dark background
+            this.ctx.fillStyle = '#0a0a1a';
+            this.ctx.fillRect(-10, -10, this.canvas.width + 20, this.canvas.height + 20);
+            this.drawStars();
+        }
 
         // Draw pipes
         this.drawPipes();
@@ -561,44 +604,99 @@ class SkyFlapGame {
     }
 
     drawPipes() {
+        const usePipeImg = this.pipeImg.complete && this.pipeImg.naturalWidth > 0;
+
         for (const pipe of this.pipes) {
             const w = this.pipeWidth;
             const capH = 20;
             const capExtra = 6;
 
-            // Top pipe body
-            const topGrad = this.ctx.createLinearGradient(pipe.x, 0, pipe.x + w, 0);
-            topGrad.addColorStop(0, '#2ecc71');
-            topGrad.addColorStop(0.5, '#27ae60');
-            topGrad.addColorStop(1, '#1e8449');
-            this.ctx.fillStyle = topGrad;
-            this.ctx.fillRect(pipe.x, 0, w, pipe.gapY - capH);
+            if (usePipeImg) {
+                const imgW = this.pipeImg.naturalWidth;
+                const imgH = this.pipeImg.naturalHeight;
 
-            // Top pipe cap
-            this.ctx.fillStyle = '#2ecc71';
-            this.ctx.beginPath();
-            this.ctx.roundRect(pipe.x - capExtra, pipe.gapY - capH, w + capExtra * 2, capH, [0, 0, 4, 4]);
-            this.ctx.fill();
+                // Top pipe body — draw image flipped vertically, tile if needed
+                const topBodyH = pipe.gapY - capH;
+                if (topBodyH > 0) {
+                    this.ctx.save();
+                    this.ctx.beginPath();
+                    this.ctx.rect(pipe.x, 0, w, topBodyH);
+                    this.ctx.clip();
+                    // Tile pipe texture vertically (flipped for top pipe)
+                    this.ctx.translate(pipe.x, topBodyH);
+                    this.ctx.scale(1, -1);
+                    const scaleX = w / imgW;
+                    const tileH = imgH * scaleX;
+                    for (let ty = 0; ty < topBodyH; ty += tileH) {
+                        this.ctx.drawImage(this.pipeImg, 0, ty, w, tileH);
+                    }
+                    this.ctx.restore();
+                }
 
-            // Top pipe highlight
-            this.ctx.fillStyle = 'rgba(255,255,255,0.15)';
-            this.ctx.fillRect(pipe.x + 4, 0, 6, pipe.gapY - capH);
+                // Top pipe cap
+                this.ctx.fillStyle = '#2ecc71';
+                this.ctx.beginPath();
+                this.ctx.roundRect(pipe.x - capExtra, pipe.gapY - capH, w + capExtra * 2, capH, [0, 0, 4, 4]);
+                this.ctx.fill();
 
-            // Bottom pipe
-            const bottomY = pipe.gapY + this.pipeGap;
-            const bottomH = this.canvas.height - bottomY;
-            this.ctx.fillStyle = topGrad;
-            this.ctx.fillRect(pipe.x, bottomY + capH, w, bottomH - capH);
+                // Bottom pipe body
+                const bottomY = pipe.gapY + this.pipeGap;
+                const bottomBodyStart = bottomY + capH;
+                const bottomBodyH = this.canvas.height - bottomBodyStart;
+                if (bottomBodyH > 0) {
+                    this.ctx.save();
+                    this.ctx.beginPath();
+                    this.ctx.rect(pipe.x, bottomBodyStart, w, bottomBodyH);
+                    this.ctx.clip();
+                    const scaleX = w / imgW;
+                    const tileH = imgH * scaleX;
+                    for (let ty = 0; ty < bottomBodyH; ty += tileH) {
+                        this.ctx.drawImage(this.pipeImg, pipe.x, bottomBodyStart + ty, w, tileH);
+                    }
+                    this.ctx.restore();
+                }
 
-            // Bottom pipe cap
-            this.ctx.fillStyle = '#2ecc71';
-            this.ctx.beginPath();
-            this.ctx.roundRect(pipe.x - capExtra, bottomY, w + capExtra * 2, capH, [4, 4, 0, 0]);
-            this.ctx.fill();
+                // Bottom pipe cap
+                this.ctx.fillStyle = '#2ecc71';
+                this.ctx.beginPath();
+                this.ctx.roundRect(pipe.x - capExtra, bottomY, w + capExtra * 2, capH, [4, 4, 0, 0]);
+                this.ctx.fill();
+            } else {
+                // Fallback: canvas-drawn gradient pipes
+                // Top pipe body
+                const topGrad = this.ctx.createLinearGradient(pipe.x, 0, pipe.x + w, 0);
+                topGrad.addColorStop(0, '#2ecc71');
+                topGrad.addColorStop(0.5, '#27ae60');
+                topGrad.addColorStop(1, '#1e8449');
+                this.ctx.fillStyle = topGrad;
+                this.ctx.fillRect(pipe.x, 0, w, pipe.gapY - capH);
 
-            // Bottom pipe highlight
-            this.ctx.fillStyle = 'rgba(255,255,255,0.15)';
-            this.ctx.fillRect(pipe.x + 4, bottomY + capH, 6, bottomH - capH);
+                // Top pipe cap
+                this.ctx.fillStyle = '#2ecc71';
+                this.ctx.beginPath();
+                this.ctx.roundRect(pipe.x - capExtra, pipe.gapY - capH, w + capExtra * 2, capH, [0, 0, 4, 4]);
+                this.ctx.fill();
+
+                // Top pipe highlight
+                this.ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                this.ctx.fillRect(pipe.x + 4, 0, 6, pipe.gapY - capH);
+
+                // Bottom pipe
+                const bottomY = pipe.gapY + this.pipeGap;
+                const bottomH = this.canvas.height - bottomY;
+                this.ctx.fillStyle = topGrad;
+                this.ctx.fillRect(pipe.x, bottomY + capH, w, bottomH - capH);
+
+                // Bottom pipe cap
+                this.ctx.fillStyle = '#2ecc71';
+                this.ctx.beginPath();
+                this.ctx.roundRect(pipe.x - capExtra, bottomY, w + capExtra * 2, capH, [4, 4, 0, 0]);
+                this.ctx.fill();
+
+                // Bottom pipe highlight
+                this.ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                this.ctx.fillRect(pipe.x + 4, bottomY + capH, 6, bottomH - capH);
+            }
         }
     }
 
@@ -614,48 +712,55 @@ class SkyFlapGame {
         const tilt = Math.max(-0.5, Math.min(0.5, this.bird.velocityY * 0.04));
         this.ctx.rotate(tilt);
 
-        // Shadow
-        this.ctx.fillStyle = 'rgba(0,0,0,0.2)';
-        this.ctx.beginPath();
-        this.ctx.ellipse(2, 3, r, r * 0.85, 0, 0, Math.PI * 2);
-        this.ctx.fill();
+        if (this.birdImg.complete && this.birdImg.naturalWidth > 0) {
+            // Draw bird sprite centered on origin
+            const size = r * 2;
+            this.ctx.drawImage(this.birdImg, -size / 2, -size / 2, size, size);
+        } else {
+            // Fallback: canvas-drawn bird
+            // Shadow
+            this.ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            this.ctx.beginPath();
+            this.ctx.ellipse(2, 3, r, r * 0.85, 0, 0, Math.PI * 2);
+            this.ctx.fill();
 
-        // Body
-        const bodyGrad = this.ctx.createRadialGradient(-3, -3, 0, 0, 0, r);
-        bodyGrad.addColorStop(0, '#FFE066');
-        bodyGrad.addColorStop(1, '#F0A500');
-        this.ctx.fillStyle = bodyGrad;
-        this.ctx.beginPath();
-        this.ctx.arc(0, 0, r, 0, Math.PI * 2);
-        this.ctx.fill();
+            // Body
+            const bodyGrad = this.ctx.createRadialGradient(-3, -3, 0, 0, 0, r);
+            bodyGrad.addColorStop(0, '#FFE066');
+            bodyGrad.addColorStop(1, '#F0A500');
+            this.ctx.fillStyle = bodyGrad;
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0, r, 0, Math.PI * 2);
+            this.ctx.fill();
 
-        // Wing
-        const wingY = Math.sin(Date.now() * 0.01) * 3;
-        this.ctx.fillStyle = '#E8920B';
-        this.ctx.beginPath();
-        this.ctx.ellipse(-r * 0.4, wingY, r * 0.55, r * 0.35, -0.3, 0, Math.PI * 2);
-        this.ctx.fill();
+            // Wing
+            const wingY = Math.sin(Date.now() * 0.01) * 3;
+            this.ctx.fillStyle = '#E8920B';
+            this.ctx.beginPath();
+            this.ctx.ellipse(-r * 0.4, wingY, r * 0.55, r * 0.35, -0.3, 0, Math.PI * 2);
+            this.ctx.fill();
 
-        // Eye white
-        this.ctx.fillStyle = '#fff';
-        this.ctx.beginPath();
-        this.ctx.arc(r * 0.3, -r * 0.2, r * 0.3, 0, Math.PI * 2);
-        this.ctx.fill();
+            // Eye white
+            this.ctx.fillStyle = '#fff';
+            this.ctx.beginPath();
+            this.ctx.arc(r * 0.3, -r * 0.2, r * 0.3, 0, Math.PI * 2);
+            this.ctx.fill();
 
-        // Pupil
-        this.ctx.fillStyle = '#111';
-        this.ctx.beginPath();
-        this.ctx.arc(r * 0.38, -r * 0.15, r * 0.15, 0, Math.PI * 2);
-        this.ctx.fill();
+            // Pupil
+            this.ctx.fillStyle = '#111';
+            this.ctx.beginPath();
+            this.ctx.arc(r * 0.38, -r * 0.15, r * 0.15, 0, Math.PI * 2);
+            this.ctx.fill();
 
-        // Beak
-        this.ctx.fillStyle = '#E74C3C';
-        this.ctx.beginPath();
-        this.ctx.moveTo(r * 0.7, 0);
-        this.ctx.lineTo(r * 1.3, -r * 0.15);
-        this.ctx.lineTo(r * 1.3, r * 0.2);
-        this.ctx.closePath();
-        this.ctx.fill();
+            // Beak
+            this.ctx.fillStyle = '#E74C3C';
+            this.ctx.beginPath();
+            this.ctx.moveTo(r * 0.7, 0);
+            this.ctx.lineTo(r * 1.3, -r * 0.15);
+            this.ctx.lineTo(r * 1.3, r * 0.2);
+            this.ctx.closePath();
+            this.ctx.fill();
+        }
 
         this.ctx.restore();
     }
