@@ -9,6 +9,7 @@ const urlsToCache = [
     '/assets/bird-opt.png',
     '/assets/pipe-opt.png',
     '/assets/bg-opt.jpg',
+    '/assets/ground-opt.png',
     '/js/locales/ko.json',
     '/js/locales/en.json',
     '/js/locales/ja.json',

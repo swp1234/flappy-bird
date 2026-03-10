@@ -78,6 +78,13 @@ class SkyFlapGame {
         this.bgImg.onerror = () => this._onImageLoad();
         this.bgImg.src = 'assets/bg-opt.jpg';
 
+        this.groundImg = new Image();
+        this.groundImgLoaded = false;
+        this.groundImg.onload = () => { this.groundImgLoaded = true; };
+        this.groundImg.onerror = () => { this.groundImgLoaded = false; };
+        this.groundImg.src = 'assets/ground-opt.png';
+        this.groundScrollX = 0;
+
         // Audio Context
         this.audioContext = null;
         this.initAudio();
@@ -567,6 +574,20 @@ class SkyFlapGame {
 
         // Draw pipes
         this.drawPipes();
+
+        // Draw ground strip (scrolling, faster than bg for parallax)
+        if (this.groundImgLoaded && this.groundImg.naturalWidth > 0) {
+            const gW = this.groundImg.naturalWidth;
+            const gH = 64;
+            const groundY = this.canvas.height - gH;
+            if (this.state === 'playing' && !this.isPaused) {
+                this.groundScrollX -= this.pipesSpeed * this.difficultyMultiplier;
+            }
+            const offset = ((this.groundScrollX % gW) + gW) % gW;
+            for (let tx = -offset; tx < this.canvas.width; tx += gW) {
+                this.ctx.drawImage(this.groundImg, tx, groundY, gW, gH);
+            }
+        }
 
         // Draw bird
         this.drawBird();
