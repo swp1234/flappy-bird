@@ -234,6 +234,30 @@ class SkyFlapGame {
         }
     }
 
+    showMedal(score) {
+        const medalDisplay = document.getElementById('medal-display');
+        const medalIcon = document.getElementById('medal-icon');
+        const medalName = document.getElementById('medal-name');
+        if (!medalDisplay) return;
+
+        const medals = [
+            { min: 100, icon: '\uD83C\uDFC6', name: 'Platinum', color: '#e5e4e2' },
+            { min: 40,  icon: '\uD83E\uDD47', name: 'Gold',     color: '#ffd700' },
+            { min: 20,  icon: '\uD83E\uDD48', name: 'Silver',   color: '#c0c0c0' },
+            { min: 10,  icon: '\uD83E\uDD49', name: 'Bronze',   color: '#cd7f32' }
+        ];
+
+        const medal = medals.find(m => score >= m.min);
+        if (medal) {
+            medalIcon.textContent = medal.icon;
+            medalName.textContent = medal.name;
+            medalDisplay.style.borderColor = medal.color;
+            medalDisplay.classList.remove('hidden');
+        } else {
+            medalDisplay.classList.add('hidden');
+        }
+    }
+
     showNewBest() {
         let el = document.getElementById('new-best-flash');
         if (!el) {
@@ -513,6 +537,9 @@ class SkyFlapGame {
         // Update final scores
         this.finalScoreDisplay.textContent = this.score;
         this.finalBestScoreDisplay.textContent = this.bestScore;
+
+        // Medal system
+        this.showMedal(this.score);
 
         // Check if new record
         if (this.score > this.bestScore) {

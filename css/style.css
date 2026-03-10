@@ -502,6 +502,38 @@ body {
     animation: pulse-record 0.6s ease-in-out;
 }
 
+.medal-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid rgba(255, 215, 0, 0.4);
+    border-radius: 12px;
+    margin-top: 4px;
+    animation: medalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.medal-display.hidden { display: none; }
+
+.medal-icon {
+    font-size: 32px;
+}
+
+.medal-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@keyframes medalIn {
+    0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
 @keyframes pulse-record {
     0%, 100% {
         opacity: 1;

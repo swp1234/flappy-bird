@@ -91,7 +91,7 @@
         "inLanguage": ["ko", "en", "zh", "hi", "ru", "ja", "es", "pt", "id", "tr", "de", "fr"],
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
         "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.6", "ratingCount": "3500", "bestRating": "5", "worstRating": "1" },
-        "featureList": "One-tap controls, sprite assets, achievements, daily streak, leaderboard, 12 languages"
+        "featureList": "One-tap controls, sprite assets, medal system, achievements, daily streak, sound effects, 12 languages"
     }
     </script>
 
@@ -203,6 +203,10 @@
                     <div class="score-item hidden" id="new-record-item">
                         <span class="new-record" data-i18n="game.newRecord">New Record!</span>
                     </div>
+                </div>
+                <div class="medal-display hidden" id="medal-display">
+                    <span class="medal-icon" id="medal-icon"></span>
+                    <span class="medal-name" id="medal-name"></span>
                 </div>
                 <div class="share-section">
                     <button id="share-btn" class="btn btn-secondary" data-i18n="game.share">Share Result</button>

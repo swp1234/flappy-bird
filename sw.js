@@ -1,5 +1,5 @@
 // Service Worker - Sky Flap PWA
-const CACHE_NAME = 'sky-flap-v4';
+const CACHE_NAME = 'sky-flap-v5';
 const urlsToCache = [
     '/',
     '/index.html',
