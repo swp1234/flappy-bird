@@ -18,7 +18,8 @@
     "level": "关卡:",
     "gameOver": "游戏结束",
     "newRecord": "新记录!",
-    "paused": "已暂停"
+    "paused": "已暂停",
+    "objective": "避开管道，尽可能飞得更远！"
   },
   "nav": {
     "relatedArticles": "📖 相关文章",

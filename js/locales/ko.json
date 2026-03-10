@@ -18,7 +18,8 @@
     "level": "레벨:",
     "gameOver": "게임 오버",
     "newRecord": "신기록!",
-    "paused": "일시정지됨"
+    "paused": "일시정지됨",
+    "objective": "파이프를 피해 최대한 멀리 날아가세요!"
   },
   "nav": {
     "relatedArticles": "📖 관련 글",

@@ -18,7 +18,8 @@
     "level": "Level:",
     "gameOver": "Game Over",
     "newRecord": "New Record!",
-    "paused": "PAUSED"
+    "paused": "PAUSED",
+    "objective": "Avoid the pipes and fly as far as you can!"
   },
   "nav": {
     "relatedArticles": "📖 Related Articles",

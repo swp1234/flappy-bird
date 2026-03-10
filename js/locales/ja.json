@@ -18,7 +18,8 @@
     "level": "レベル:",
     "gameOver": "ゲームオーバー",
     "newRecord": "新記録!",
-    "paused": "一時停止"
+    "paused": "一時停止",
+    "objective": "パイプを避けてできるだけ遠くまで飛びましょう！"
   },
   "nav": {
     "relatedArticles": "📖 関連記事",

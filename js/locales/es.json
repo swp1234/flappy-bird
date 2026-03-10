@@ -18,7 +18,8 @@
     "level": "Nivel:",
     "gameOver": "Fin del Juego",
     "newRecord": "¡Nuevo Récord!",
-    "paused": "PAUSADO"
+    "paused": "PAUSADO",
+    "objective": "¡Esquiva las tuberías y vuela lo más lejos posible!"
   },
   "nav": {
     "relatedArticles": "📖 Artículos relacionados",

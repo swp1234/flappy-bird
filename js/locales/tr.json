@@ -18,7 +18,8 @@
     "level": "Seviye:",
     "gameOver": "Oyun Bitti",
     "newRecord": "Yeni Rekor!",
-    "paused": "DURDURULDU"
+    "paused": "DURDURULDU",
+    "objective": "Borulardan kaçının ve olabildiğince uzağa uçun!"
   },
   "nav": {
     "relatedArticles": "📖 İlgili yazılar",

@@ -18,7 +18,8 @@
     "level": "Level:",
     "gameOver": "Permainan Berakhir",
     "newRecord": "Rekor Baru!",
-    "paused": "DIJEDA"
+    "paused": "DIJEDA",
+    "objective": "Hindari pipa dan terbang sejauh mungkin!"
   },
   "nav": {
     "relatedArticles": "📖 Artikel terkait",

@@ -18,7 +18,8 @@
     "level": "Nível:",
     "gameOver": "Fim de Jogo",
     "newRecord": "Novo Recorde!",
-    "paused": "PAUSADO"
+    "paused": "PAUSADO",
+    "objective": "Desvie dos canos e voe o mais longe possível!"
   },
   "nav": {
     "relatedArticles": "📖 Artigos relacionados",

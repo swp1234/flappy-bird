@@ -18,7 +18,8 @@
     "level": "Level:",
     "gameOver": "Spielende",
     "newRecord": "Neuer Rekord!",
-    "paused": "PAUSIERT"
+    "paused": "PAUSIERT",
+    "objective": "Weiche den Rohren aus und fliege so weit wie möglich!"
   },
   "nav": {
     "relatedArticles": "📖 Verwandte Artikel",
