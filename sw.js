@@ -1,11 +1,14 @@
 // Service Worker - Sky Flap PWA
-const CACHE_NAME = 'sky-flap-v2';
+const CACHE_NAME = 'sky-flap-v3';
 const urlsToCache = [
     '/',
     '/index.html',
     '/css/style.css',
     '/js/app.js',
     '/js/i18n.js',
+    '/assets/bird-opt.png',
+    '/assets/pipe-opt.png',
+    '/assets/bg-opt.jpg',
     '/js/locales/ko.json',
     '/js/locales/en.json',
     '/js/locales/ja.json',
