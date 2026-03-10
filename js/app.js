@@ -54,6 +54,7 @@ class SkyFlapGame {
         this.pipesSpeed = 4;
         this.pipeSpacing = 280;
         this.pipes = [];
+        this.coins = [];
         this.nextPipeX = this.canvas.width + 50;
         this.difficultyMultiplier = 1;
 
@@ -306,6 +307,7 @@ class SkyFlapGame {
         this.level = 1;
         this.difficultyMultiplier = 1;
         this.pipes = [];
+        this.coins = [];
         this.nextPipeX = this.canvas.width + 50;
         this.bird.velocityY = 0;
         this.bird.y = this.canvas.height / 2;
@@ -410,14 +412,52 @@ class SkyFlapGame {
         // Scroll spawn point left with the world
         this.nextPipeX -= speed;
 
+        // Update moving pipes
+        for (const pipe of this.pipes) {
+            if (pipe.moving) {
+                pipe.gapY = pipe.baseGapY + Math.sin(Date.now() / pipe.moveSpeed) * pipe.moveRange;
+            }
+        }
+
+        // Update coins
+        if (this.coins) {
+            for (let i = this.coins.length - 1; i >= 0; i--) {
+                this.coins[i].x -= speed;
+                if (this.coins[i].x < -20) { this.coins.splice(i, 1); continue; }
+                const dx = this.bird.x - this.coins[i].x;
+                const dy = this.bird.y - this.coins[i].y;
+                if (dx * dx + dy * dy < 22 * 22) {
+                    this.score += 2;
+                    this.playSound('score');
+                    if (typeof Haptic !== 'undefined') Haptic.medium();
+                    this.addFloatingText('+2', this.coins[i].x, this.coins[i].y - 15);
+                    this.spawnScoreParticles(this.coins[i].x, this.coins[i].y);
+                    this.coins.splice(i, 1);
+                }
+            }
+        }
+
         // Generate new pipe when spawn point enters the view
         if (this.nextPipeX < this.canvas.width) {
             const gapY = Math.random() * (this.canvas.height - this.pipeGap - 100) + 50;
+            const isMoving = this.score >= 10 && Math.random() < 0.35;
             this.pipes.push({
                 x: this.nextPipeX,
                 gapY: gapY,
-                scored: false
+                baseGapY: gapY,
+                scored: false,
+                moving: isMoving,
+                moveSpeed: 400 + Math.random() * 300,
+                moveRange: 20 + Math.random() * 15
             });
+            // Spawn coin in gap (40% chance)
+            if (Math.random() < 0.4) {
+                if (!this.coins) this.coins = [];
+                this.coins.push({
+                    x: this.nextPipeX + this.pipeWidth / 2,
+                    y: gapY + this.pipeGap / 2
+                });
+            }
             this.nextPipeX += this.pipeSpacing;
         }
     }
@@ -659,6 +699,30 @@ class SkyFlapGame {
             }
         }
 
+        // Draw coins
+        if (this.coins) {
+            for (const coin of this.coins) {
+                const pulse = Math.sin(Date.now() / 200) * 2;
+                const r = 10 + pulse;
+                const cg = this.ctx.createRadialGradient(coin.x - 2, coin.y - 2, 0, coin.x, coin.y, r);
+                cg.addColorStop(0, '#fff8dc');
+                cg.addColorStop(0.4, '#fbbf24');
+                cg.addColorStop(1, '#d97706');
+                this.ctx.fillStyle = cg;
+                this.ctx.shadowColor = '#fbbf24';
+                this.ctx.shadowBlur = 8;
+                this.ctx.beginPath();
+                this.ctx.arc(coin.x, coin.y, r, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.shadowBlur = 0;
+                // Star sparkle
+                this.ctx.fillStyle = '#fff';
+                this.ctx.font = `${8 + pulse}px sans-serif`;
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('\u2605', coin.x, coin.y + 3);
+            }
+        }
+
         // Draw bird
         this.drawBird();
 
@@ -725,7 +789,8 @@ class SkyFlapGame {
                 }
 
                 // Top pipe cap
-                this.ctx.fillStyle = '#2ecc71';
+                const capColor = pipe.moving ? '#e74c3c' : '#2ecc71';
+                this.ctx.fillStyle = capColor;
                 this.ctx.beginPath();
                 this.ctx.roundRect(pipe.x - capExtra, pipe.gapY - capH, w + capExtra * 2, capH, [0, 0, 4, 4]);
                 this.ctx.fill();
@@ -748,22 +813,25 @@ class SkyFlapGame {
                 }
 
                 // Bottom pipe cap
-                this.ctx.fillStyle = '#2ecc71';
+                this.ctx.fillStyle = capColor;
                 this.ctx.beginPath();
                 this.ctx.roundRect(pipe.x - capExtra, bottomY, w + capExtra * 2, capH, [4, 4, 0, 0]);
                 this.ctx.fill();
             } else {
                 // Fallback: canvas-drawn gradient pipes
+                const pipeColor1 = pipe.moving ? '#e74c3c' : '#2ecc71';
+                const pipeColor2 = pipe.moving ? '#c0392b' : '#27ae60';
+                const pipeColor3 = pipe.moving ? '#a93226' : '#1e8449';
                 // Top pipe body
                 const topGrad = this.ctx.createLinearGradient(pipe.x, 0, pipe.x + w, 0);
-                topGrad.addColorStop(0, '#2ecc71');
-                topGrad.addColorStop(0.5, '#27ae60');
-                topGrad.addColorStop(1, '#1e8449');
+                topGrad.addColorStop(0, pipeColor1);
+                topGrad.addColorStop(0.5, pipeColor2);
+                topGrad.addColorStop(1, pipeColor3);
                 this.ctx.fillStyle = topGrad;
                 this.ctx.fillRect(pipe.x, 0, w, pipe.gapY - capH);
 
                 // Top pipe cap
-                this.ctx.fillStyle = '#2ecc71';
+                this.ctx.fillStyle = pipeColor1;
                 this.ctx.beginPath();
                 this.ctx.roundRect(pipe.x - capExtra, pipe.gapY - capH, w + capExtra * 2, capH, [0, 0, 4, 4]);
                 this.ctx.fill();
@@ -779,7 +847,7 @@ class SkyFlapGame {
                 this.ctx.fillRect(pipe.x, bottomY + capH, w, bottomH - capH);
 
                 // Bottom pipe cap
-                this.ctx.fillStyle = '#2ecc71';
+                this.ctx.fillStyle = pipeColor1;
                 this.ctx.beginPath();
                 this.ctx.roundRect(pipe.x - capExtra, bottomY, w + capExtra * 2, capH, [4, 4, 0, 0]);
                 this.ctx.fill();
