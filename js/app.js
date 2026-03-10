@@ -234,12 +234,30 @@ class SkyFlapGame {
         }
     }
 
+    showNewBest() {
+        let el = document.getElementById('new-best-flash');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'new-best-flash';
+            el.style.cssText = 'position:fixed;top:20%;left:50%;transform:translate(-50%,-50%) scale(0);font-family:var(--heading,"Syne",sans-serif);font-size:32px;font-weight:800;color:#fbbf24;text-shadow:0 0 30px rgba(251,191,36,0.6);pointer-events:none;z-index:200;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;white-space:nowrap;';
+            document.body.appendChild(el);
+        }
+        el.textContent = 'NEW BEST!';
+        el.style.transform = 'translate(-50%,-50%) scale(1.2)';
+        el.style.opacity = '1';
+        setTimeout(() => {
+            el.style.transform = 'translate(-50%,-50%) scale(0.8)';
+            el.style.opacity = '0';
+        }, 1200);
+    }
+
     startGame() {
         if (typeof GameAds !== 'undefined') GameAds.removeRewardButton('#gameover-screen');
         this.showScreen('game');
         // Resize canvas AFTER screen is visible (prevents height=0 bug)
         this.resizeCanvas();
 
+        this._newBestShown = false;
         this.score = 0;
         this.level = 1;
         this.difficultyMultiplier = 1;
@@ -501,6 +519,10 @@ class SkyFlapGame {
             this.bestScore = this.score;
             this.saveBestScore();
             this.newRecordItem.classList.remove('hidden');
+            if (!this._newBestShown) {
+                this._newBestShown = true;
+                this.showNewBest();
+            }
         } else {
             this.newRecordItem.classList.add('hidden');
         }
