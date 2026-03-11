@@ -699,27 +699,55 @@ class SkyFlapGame {
             }
         }
 
-        // Draw coins
+        // Draw coins with 3D spinning effect
         if (this.coins) {
+            const t = Date.now() / 600;
             for (const coin of this.coins) {
-                const pulse = Math.sin(Date.now() / 200) * 2;
+                const pulse = Math.sin(t * 2) * 1.5;
                 const r = 10 + pulse;
-                const cg = this.ctx.createRadialGradient(coin.x - 2, coin.y - 2, 0, coin.x, coin.y, r);
+                const spin = Math.cos(t + coin.x * 0.1); // 3D spin factor (-1 to 1)
+                const scaleX = Math.abs(spin);
+
+                this.ctx.save();
+                this.ctx.translate(coin.x, coin.y);
+                this.ctx.scale(scaleX * 0.7 + 0.3, 1); // squash horizontally for spin
+
+                // Glow
+                this.ctx.shadowColor = '#fbbf24';
+                this.ctx.shadowBlur = 10;
+
+                // Base coin
+                const cg = this.ctx.createRadialGradient(-2, -2, 0, 0, 0, r);
                 cg.addColorStop(0, '#fff8dc');
                 cg.addColorStop(0.4, '#fbbf24');
                 cg.addColorStop(1, '#d97706');
                 this.ctx.fillStyle = cg;
-                this.ctx.shadowColor = '#fbbf24';
-                this.ctx.shadowBlur = 8;
                 this.ctx.beginPath();
-                this.ctx.arc(coin.x, coin.y, r, 0, Math.PI * 2);
+                this.ctx.arc(0, 0, r, 0, Math.PI * 2);
                 this.ctx.fill();
+
+                // Edge ring
+                this.ctx.strokeStyle = '#b45309';
+                this.ctx.lineWidth = 1.5;
+                this.ctx.stroke();
+
+                // Highlight stripe (moves with spin)
+                if (spin > 0) {
+                    this.ctx.fillStyle = 'rgba(255,255,255,0.35)';
+                    this.ctx.beginPath();
+                    this.ctx.arc(spin * 3, -2, r * 0.55, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+
                 this.ctx.shadowBlur = 0;
-                // Star sparkle
+
+                // Star icon
                 this.ctx.fillStyle = '#fff';
                 this.ctx.font = `${8 + pulse}px sans-serif`;
                 this.ctx.textAlign = 'center';
-                this.ctx.fillText('\u2605', coin.x, coin.y + 3);
+                this.ctx.fillText('\u2605', 0, 3);
+
+                this.ctx.restore();
             }
         }
 
