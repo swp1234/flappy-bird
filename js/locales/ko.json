@@ -19,7 +19,14 @@
     "gameOver": "게임 오버",
     "newRecord": "신기록!",
     "paused": "일시정지됨",
-    "objective": "파이프를 피해 최대한 멀리 날아가세요!"
+    "objective": "파이프를 피해 최대한 멀리 날아가세요!",
+    "medalPlatinum": "플래티넘",
+    "medalGold": "골드",
+    "medalSilver": "실버",
+    "medalBronze": "브론즈",
+    "newBest": "최고 기록!",
+    "scoreCopied": "점수가 클립보드에 복사되었습니다!",
+    "shareText": "Sky Flap에서 {score}점! 도전해보세요!"
   },
   "nav": {
     "relatedArticles": "📖 관련 글",

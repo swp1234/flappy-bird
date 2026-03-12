@@ -19,7 +19,14 @@
     "gameOver": "Permainan Berakhir",
     "newRecord": "Rekor Baru!",
     "paused": "DIJEDA",
-    "objective": "Hindari pipa dan terbang sejauh mungkin!"
+    "objective": "Hindari pipa dan terbang sejauh mungkin!",
+    "medalPlatinum": "Platinum",
+    "medalGold": "Emas",
+    "medalSilver": "Perak",
+    "medalBronze": "Perunggu",
+    "newBest": "REKOR BARU!",
+    "scoreCopied": "Skor disalin!",
+    "shareText": "Skor saya {score} di Sky Flap! Bisa kalahkan?"
   },
   "nav": {
     "relatedArticles": "📖 Artikel terkait",

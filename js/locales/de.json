@@ -19,7 +19,14 @@
     "gameOver": "Spielende",
     "newRecord": "Neuer Rekord!",
     "paused": "PAUSIERT",
-    "objective": "Weiche den Rohren aus und fliege so weit wie möglich!"
+    "objective": "Weiche den Rohren aus und fliege so weit wie möglich!",
+    "medalPlatinum": "Platin",
+    "medalGold": "Gold",
+    "medalSilver": "Silber",
+    "medalBronze": "Bronze",
+    "newBest": "NEUER REKORD!",
+    "scoreCopied": "Punktzahl kopiert!",
+    "shareText": "{score} Punkte in Sky Flap! Kannst du mich schlagen?"
   },
   "nav": {
     "relatedArticles": "📖 Verwandte Artikel",

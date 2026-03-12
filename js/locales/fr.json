@@ -19,7 +19,14 @@
     "gameOver": "Fin de Partie",
     "newRecord": "Nouveau Record!",
     "paused": "PAUSE",
-    "objective": "Évitez les tuyaux et volez aussi loin que possible !"
+    "objective": "Évitez les tuyaux et volez aussi loin que possible !",
+    "medalPlatinum": "Platine",
+    "medalGold": "Or",
+    "medalSilver": "Argent",
+    "medalBronze": "Bronze",
+    "newBest": "NOUVEAU RECORD !",
+    "scoreCopied": "Score copié !",
+    "shareText": "{score} points à Sky Flap ! Tu peux faire mieux ?"
   },
   "nav": {
     "relatedArticles": "📖 Articles connexes",

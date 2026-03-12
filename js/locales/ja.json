@@ -19,7 +19,14 @@
     "gameOver": "ゲームオーバー",
     "newRecord": "新記録!",
     "paused": "一時停止",
-    "objective": "パイプを避けてできるだけ遠くまで飛びましょう！"
+    "objective": "パイプを避けてできるだけ遠くまで飛びましょう！",
+    "medalPlatinum": "プラチナ",
+    "medalGold": "ゴールド",
+    "medalSilver": "シルバー",
+    "medalBronze": "ブロンズ",
+    "newBest": "最高記録！",
+    "scoreCopied": "スコアをコピーしました！",
+    "shareText": "Sky Flapで{score}点！挑戦してみて！"
   },
   "nav": {
     "relatedArticles": "📖 関連記事",

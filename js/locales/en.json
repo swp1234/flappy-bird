@@ -19,7 +19,14 @@
     "gameOver": "Game Over",
     "newRecord": "New Record!",
     "paused": "PAUSED",
-    "objective": "Avoid the pipes and fly as far as you can!"
+    "objective": "Avoid the pipes and fly as far as you can!",
+    "medalPlatinum": "Platinum",
+    "medalGold": "Gold",
+    "medalSilver": "Silver",
+    "medalBronze": "Bronze",
+    "newBest": "NEW BEST!",
+    "scoreCopied": "Score copied to clipboard!",
+    "shareText": "I scored {score} in Sky Flap! Can you beat me?"
   },
   "nav": {
     "relatedArticles": "📖 Related Articles",

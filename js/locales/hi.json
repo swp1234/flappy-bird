@@ -19,7 +19,14 @@
     "gameOver": "गेम समाप्त",
     "newRecord": "नया रिकॉर्ड!",
     "paused": "रुका हुआ",
-    "objective": "पाइपों से बचें और जितना दूर हो सके उड़ें!"
+    "objective": "पाइपों से बचें और जितना दूर हो सके उड़ें!",
+    "medalPlatinum": "प्लैटिनम",
+    "medalGold": "गोल्ड",
+    "medalSilver": "सिल्वर",
+    "medalBronze": "ब्रॉन्ज़",
+    "newBest": "नया रिकॉर्ड!",
+    "scoreCopied": "स्कोर कॉपी हो गया!",
+    "shareText": "Sky Flap में {score} अंक! चुनौती स्वीकारें!"
   },
   "nav": {
     "relatedArticles": "📖 संबंधित लेख",

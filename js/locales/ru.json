@@ -19,7 +19,14 @@
     "gameOver": "Конец Игры",
     "newRecord": "Новый Рекорд!",
     "paused": "ПАУЗА",
-    "objective": "Избегайте труб и летите как можно дальше!"
+    "objective": "Избегайте труб и летите как можно дальше!",
+    "medalPlatinum": "Платина",
+    "medalGold": "Золото",
+    "medalSilver": "Серебро",
+    "medalBronze": "Бронза",
+    "newBest": "НОВЫЙ РЕКОРД!",
+    "scoreCopied": "Счёт скопирован!",
+    "shareText": "Мой результат в Sky Flap: {score}! Попробуй побить!"
   },
   "nav": {
     "relatedArticles": "📖 Статьи",

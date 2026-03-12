@@ -19,7 +19,14 @@
     "gameOver": "Fin del Juego",
     "newRecord": "¡Nuevo Récord!",
     "paused": "PAUSADO",
-    "objective": "¡Esquiva las tuberías y vuela lo más lejos posible!"
+    "objective": "¡Esquiva las tuberías y vuela lo más lejos posible!",
+    "medalPlatinum": "Platino",
+    "medalGold": "Oro",
+    "medalSilver": "Plata",
+    "medalBronze": "Bronce",
+    "newBest": "¡NUEVO RÉCORD!",
+    "scoreCopied": "¡Puntuación copiada!",
+    "shareText": "¡{score} puntos en Sky Flap! ¿Puedes superarme?"
   },
   "nav": {
     "relatedArticles": "📖 Artículos relacionados",

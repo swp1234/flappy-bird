@@ -245,16 +245,16 @@ class SkyFlapGame {
         if (!medalDisplay) return;
 
         const medals = [
-            { min: 100, icon: '\uD83C\uDFC6', name: 'Platinum', color: '#e5e4e2' },
-            { min: 40,  icon: '\uD83E\uDD47', name: 'Gold',     color: '#ffd700' },
-            { min: 20,  icon: '\uD83E\uDD48', name: 'Silver',   color: '#c0c0c0' },
-            { min: 10,  icon: '\uD83E\uDD49', name: 'Bronze',   color: '#cd7f32' }
+            { min: 100, icon: '\uD83C\uDFC6', name: 'Platinum', nameKey: 'game.medalPlatinum', color: '#e5e4e2' },
+            { min: 40,  icon: '\uD83E\uDD47', name: 'Gold',     nameKey: 'game.medalGold',     color: '#ffd700' },
+            { min: 20,  icon: '\uD83E\uDD48', name: 'Silver',   nameKey: 'game.medalSilver',   color: '#c0c0c0' },
+            { min: 10,  icon: '\uD83E\uDD49', name: 'Bronze',   nameKey: 'game.medalBronze',   color: '#cd7f32' }
         ];
 
         const medal = medals.find(m => score >= m.min);
         if (medal) {
             medalIcon.textContent = medal.icon;
-            medalName.textContent = medal.name;
+            medalName.textContent = window.i18n?.t(medal.nameKey) || medal.name;
             medalDisplay.style.borderColor = medal.color;
             medalDisplay.classList.remove('hidden');
             // Trigger confetti on gold medal or higher
@@ -274,7 +274,7 @@ class SkyFlapGame {
             el.style.cssText = 'position:fixed;top:20%;left:50%;transform:translate(-50%,-50%) scale(0);font-family:var(--heading,"Syne",sans-serif);font-size:32px;font-weight:800;color:#fbbf24;text-shadow:0 0 30px rgba(251,191,36,0.6);pointer-events:none;z-index:200;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;white-space:nowrap;';
             document.body.appendChild(el);
         }
-        el.textContent = 'NEW BEST!';
+        el.textContent = window.i18n?.t('game.newBest') || 'NEW BEST!';
         el.style.transform = 'translate(-50%,-50%) scale(1.2)';
         el.style.opacity = '1';
         setTimeout(() => {
@@ -348,7 +348,8 @@ class SkyFlapGame {
     }
 
     shareResult() {
-        const text = `I scored ${this.score} points on Sky Flap! Can you beat my score? Play now at dopabrain.com/games/sky-flap/`;
+        const shareMsg = window.i18n?.t('game.shareText', { score: this.score }) || `I scored ${this.score} in Sky Flap! Can you beat me?`;
+        const text = shareMsg + ' https://dopabrain.com/games/sky-flap/';
         if (navigator.share) {
             navigator.share({
                 title: 'Sky Flap',
@@ -358,7 +359,7 @@ class SkyFlapGame {
         } else {
             // Fallback: copy to clipboard
             navigator.clipboard.writeText(text).then(() => {
-                alert('Score copied to clipboard!');
+                alert(window.i18n?.t('game.scoreCopied') || 'Score copied to clipboard!');
             });
         }
     }

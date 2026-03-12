@@ -19,7 +19,14 @@
     "gameOver": "Fim de Jogo",
     "newRecord": "Novo Recorde!",
     "paused": "PAUSADO",
-    "objective": "Desvie dos canos e voe o mais longe possível!"
+    "objective": "Desvie dos canos e voe o mais longe possível!",
+    "medalPlatinum": "Platina",
+    "medalGold": "Ouro",
+    "medalSilver": "Prata",
+    "medalBronze": "Bronze",
+    "newBest": "NOVO RECORDE!",
+    "scoreCopied": "Pontuação copiada!",
+    "shareText": "{score} pontos no Sky Flap! Consegue superar?"
   },
   "nav": {
     "relatedArticles": "📖 Artigos relacionados",

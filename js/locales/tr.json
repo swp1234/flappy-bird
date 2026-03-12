@@ -19,7 +19,14 @@
     "gameOver": "Oyun Bitti",
     "newRecord": "Yeni Rekor!",
     "paused": "DURDURULDU",
-    "objective": "Borulardan kaçının ve olabildiğince uzağa uçun!"
+    "objective": "Borulardan kaçının ve olabildiğince uzağa uçun!",
+    "medalPlatinum": "Platin",
+    "medalGold": "Altın",
+    "medalSilver": "Gümüş",
+    "medalBronze": "Bronz",
+    "newBest": "YENİ REKOR!",
+    "scoreCopied": "Skor kopyalandı!",
+    "shareText": "Sky Flap'te {score} puan! Sen de dene!"
   },
   "nav": {
     "relatedArticles": "📖 İlgili yazılar",
