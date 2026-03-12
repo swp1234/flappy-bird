@@ -31,5 +31,13 @@
   "nav": {
     "relatedArticles": "📖 Articles connexes",
     "backHome": "← DopaBrain Accueil"
+  },
+  "error": {
+    "storage": "Certaines fonctions peuvent être limitées en mode privé.",
+    "data": "Erreur de chargement. Veuillez rafraîchir la page.",
+    "canvas": "Problème de rendu graphique. Veuillez réessayer.",
+    "audio": "Audio indisponible. Vous pouvez continuer.",
+    "network": "Vérifiez votre connexion et réessayez.",
+    "general": "Un problème est survenu. Rafraîchissez ou réessayez."
   }
 }
