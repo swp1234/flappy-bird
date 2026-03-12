@@ -55,6 +55,9 @@ class SkyFlapGame {
         this.pipeSpacing = 280;
         this.pipes = [];
         this.coins = [];
+        this.shields = [];
+        this.hasShield = false;
+        this.shieldTimer = 0;
         this.nextPipeX = this.canvas.width + 50;
         this.difficultyMultiplier = 1;
 
@@ -308,6 +311,9 @@ class SkyFlapGame {
         this.difficultyMultiplier = 1;
         this.pipes = [];
         this.coins = [];
+        this.shields = [];
+        this.hasShield = false;
+        this.shieldTimer = 0;
         this.nextPipeX = this.canvas.width + 50;
         this.bird.velocityY = 0;
         this.bird.y = this.canvas.height / 2;
@@ -437,6 +443,23 @@ class SkyFlapGame {
             }
         }
 
+        // Update shields
+        for (let i = this.shields.length - 1; i >= 0; i--) {
+            this.shields[i].x -= speed;
+            if (this.shields[i].x < -20) { this.shields.splice(i, 1); continue; }
+            const dx = this.bird.x - this.shields[i].x;
+            const dy = this.bird.y - this.shields[i].y;
+            if (dx * dx + dy * dy < 25 * 25) {
+                this.hasShield = true;
+                this.shieldTimer = 0;
+                this.playSound('score');
+                if (typeof Haptic !== 'undefined') Haptic.medium();
+                this.addFloatingText('SHIELD!', this.shields[i].x, this.shields[i].y - 15);
+                this.spawnScoreParticles(this.shields[i].x, this.shields[i].y);
+                this.shields.splice(i, 1);
+            }
+        }
+
         // Generate new pipe when spawn point enters the view
         if (this.nextPipeX < this.canvas.width) {
             const gapY = Math.random() * (this.canvas.height - this.pipeGap - 100) + 50;
@@ -456,6 +479,13 @@ class SkyFlapGame {
                 this.coins.push({
                     x: this.nextPipeX + this.pipeWidth / 2,
                     y: gapY + this.pipeGap / 2
+                });
+            }
+            // Spawn shield in gap (12% chance, only if player has no shield)
+            if (!this.hasShield && Math.random() < 0.12) {
+                this.shields.push({
+                    x: this.nextPipeX + this.pipeWidth / 2,
+                    y: gapY + this.pipeGap / 2 + (Math.random() - 0.5) * 30
                 });
             }
             this.nextPipeX += this.pipeSpacing;
@@ -483,17 +513,27 @@ class SkyFlapGame {
         // Pipe collisions
         for (const pipe of this.pipes) {
             // Top pipe
-            if (this.bird.x + this.bird.radius > pipe.x &&
+            const hitTop = this.bird.x + this.bird.radius > pipe.x &&
                 this.bird.x - this.bird.radius < pipe.x + this.pipeWidth &&
-                this.bird.y - this.bird.radius < pipe.gapY) {
-                this.gameOver();
-                return;
-            }
+                this.bird.y - this.bird.radius < pipe.gapY;
 
             // Bottom pipe
-            if (this.bird.x + this.bird.radius > pipe.x &&
+            const hitBottom = this.bird.x + this.bird.radius > pipe.x &&
                 this.bird.x - this.bird.radius < pipe.x + this.pipeWidth &&
-                this.bird.y + this.bird.radius > pipe.gapY + this.pipeGap) {
+                this.bird.y + this.bird.radius > pipe.gapY + this.pipeGap;
+
+            if (hitTop || hitBottom) {
+                if (this.hasShield) {
+                    this.hasShield = false;
+                    this.triggerShake(5, 8);
+                    this.spawnCollisionParticles(this.bird.x, this.bird.y);
+                    this.addFloatingText('SAVED!', this.bird.x, this.bird.y - 30);
+                    if (typeof Haptic !== 'undefined') Haptic.heavy();
+                    // Push bird back to gap center to prevent immediate re-collision
+                    this.bird.y = pipe.gapY + this.pipeGap / 2;
+                    this.bird.velocityY = -4;
+                    return;
+                }
                 this.gameOver();
                 return;
             }
@@ -751,8 +791,55 @@ class SkyFlapGame {
             }
         }
 
+        // Draw shield pickups
+        if (this.shields) {
+            const t = Date.now() / 500;
+            for (const s of this.shields) {
+                const pulse = Math.sin(t) * 2;
+                const r = 12 + pulse;
+                this.ctx.save();
+                this.ctx.translate(s.x, s.y);
+                this.ctx.shadowColor = '#3498db';
+                this.ctx.shadowBlur = 15;
+                const sg = this.ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+                sg.addColorStop(0, 'rgba(52,152,219,0.9)');
+                sg.addColorStop(0.7, 'rgba(41,128,185,0.6)');
+                sg.addColorStop(1, 'rgba(52,152,219,0.1)');
+                this.ctx.fillStyle = sg;
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, r, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+                this.ctx.fillStyle = '#fff';
+                this.ctx.font = 'bold 12px sans-serif';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('\u26E8', 1, 5);
+                this.ctx.shadowBlur = 0;
+                this.ctx.restore();
+            }
+        }
+
         // Draw bird
         this.drawBird();
+
+        // Draw shield bubble around bird
+        if (this.hasShield) {
+            this.shieldTimer++;
+            const pulse = Math.sin(this.shieldTimer * 0.08) * 3;
+            const r = this.bird.radius + 8 + pulse;
+            this.ctx.save();
+            this.ctx.translate(this.bird.x, this.bird.y);
+            this.ctx.strokeStyle = `rgba(52,152,219,${0.5 + Math.sin(this.shieldTimer * 0.05) * 0.2})`;
+            this.ctx.lineWidth = 2.5;
+            this.ctx.shadowColor = '#3498db';
+            this.ctx.shadowBlur = 12;
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0, r, 0, Math.PI * 2);
+            this.ctx.stroke();
+            this.ctx.restore();
+        }
 
         // Draw particles & floating texts
         this.drawParticles();
