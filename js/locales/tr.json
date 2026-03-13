@@ -32,6 +32,15 @@
     "relatedArticles": "📖 İlgili yazılar",
     "backHome": "← DopaBrain Ana Sayfa"
   },
+  "result": {
+    "moreGames": "Daha fazla oyun"
+  },
+  "related": {
+    "stackTower": "Yığın Kule",
+    "zigzagRunner": "Zikzak Koşucu",
+    "snakeGame": "Yılan Oyunu",
+    "emojiMerge": "Emoji Birleştir"
+  },
   "error": {
     "storage": "Gizli modda bazı özellikler sınırlı olabilir.",
     "data": "Veri yükleme hatası. Lütfen sayfayı yenileyin.",

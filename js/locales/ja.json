@@ -32,6 +32,15 @@
     "relatedArticles": "📖 関連記事",
     "backHome": "← DopaBrain ホーム"
   },
+  "result": {
+    "moreGames": "もっとゲーム"
+  },
+  "related": {
+    "stackTower": "スタックタワー",
+    "zigzagRunner": "ジグザグランナー",
+    "snakeGame": "スネークゲーム",
+    "emojiMerge": "絵文字マージ"
+  },
   "error": {
     "storage": "プライベートモードでは一部機能が制限されます。",
     "data": "データ読み込みエラー。ページを更新してください。",

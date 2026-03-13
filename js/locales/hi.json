@@ -32,6 +32,15 @@
     "relatedArticles": "📖 संबंधित लेख",
     "backHome": "← DopaBrain होम"
   },
+  "result": {
+    "moreGames": "और गेम"
+  },
+  "related": {
+    "stackTower": "स्टैक टावर",
+    "zigzagRunner": "ज़िगज़ैग रनर",
+    "snakeGame": "स्नेक गेम",
+    "emojiMerge": "इमोजी मर्ज"
+  },
   "error": {
     "storage": "प्राइवेट मोड में कुछ सुविधाएं सीमित हो सकती हैं।",
     "data": "डेटा लोडिंग त्रुटि। कृपया पेज रीफ्रेश करें।",

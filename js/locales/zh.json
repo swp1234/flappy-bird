@@ -32,6 +32,15 @@
     "relatedArticles": "📖 相关文章",
     "backHome": "← DopaBrain 首页"
   },
+  "result": {
+    "moreGames": "更多游戏"
+  },
+  "related": {
+    "stackTower": "叠叠塔",
+    "zigzagRunner": "之字跑者",
+    "snakeGame": "贪吃蛇",
+    "emojiMerge": "表情合成"
+  },
   "error": {
     "storage": "隐私模式下部分功能可能受限。",
     "data": "数据加载错误，请刷新页面。",

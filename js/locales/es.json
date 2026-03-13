@@ -32,6 +32,15 @@
     "relatedArticles": "📖 Artículos relacionados",
     "backHome": "← DopaBrain Inicio"
   },
+  "result": {
+    "moreGames": "Más juegos"
+  },
+  "related": {
+    "stackTower": "Torre Apilable",
+    "zigzagRunner": "Corredor Zigzag",
+    "snakeGame": "Juego de Serpiente",
+    "emojiMerge": "Fusión Emoji"
+  },
   "error": {
     "storage": "Algunas funciones pueden estar limitadas en modo privado.",
     "data": "Error al cargar datos. Actualice la página.",

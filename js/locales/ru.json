@@ -32,6 +32,15 @@
     "relatedArticles": "📖 Статьи",
     "backHome": "← DopaBrain Главная"
   },
+  "result": {
+    "moreGames": "Ещё игры"
+  },
+  "related": {
+    "stackTower": "Стек Башня",
+    "zigzagRunner": "Зигзаг Бегун",
+    "snakeGame": "Змейка",
+    "emojiMerge": "Эмодзи Слияние"
+  },
   "error": {
     "storage": "В приватном режиме некоторые функции ограничены.",
     "data": "Ошибка загрузки данных. Обновите страницу.",

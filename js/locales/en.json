@@ -32,6 +32,15 @@
     "relatedArticles": "📖 Related Articles",
     "backHome": "← DopaBrain Home"
   },
+  "result": {
+    "moreGames": "More Games"
+  },
+  "related": {
+    "stackTower": "Stack Tower",
+    "zigzagRunner": "Zigzag Runner",
+    "snakeGame": "Snake Game",
+    "emojiMerge": "Emoji Merge"
+  },
   "error": {
     "storage": "Some features may be limited in private mode. You can continue.",
     "data": "Data loading error. Please refresh the page.",

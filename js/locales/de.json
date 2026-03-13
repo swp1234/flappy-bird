@@ -32,6 +32,15 @@
     "relatedArticles": "📖 Verwandte Artikel",
     "backHome": "← DopaBrain Startseite"
   },
+  "result": {
+    "moreGames": "Mehr Spiele"
+  },
+  "related": {
+    "stackTower": "Stapelturm",
+    "zigzagRunner": "Zickzack-Läufer",
+    "snakeGame": "Schlangenspiel",
+    "emojiMerge": "Emoji Fusion"
+  },
   "error": {
     "storage": "Einige Funktionen sind im privaten Modus eingeschränkt.",
     "data": "Fehler beim Laden. Bitte Seite aktualisieren.",

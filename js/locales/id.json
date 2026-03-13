@@ -32,6 +32,15 @@
     "relatedArticles": "📖 Artikel terkait",
     "backHome": "← DopaBrain Beranda"
   },
+  "result": {
+    "moreGames": "Game lainnya"
+  },
+  "related": {
+    "stackTower": "Menara Tumpuk",
+    "zigzagRunner": "Pelari Zigzag",
+    "snakeGame": "Game Ular",
+    "emojiMerge": "Gabung Emoji"
+  },
   "error": {
     "storage": "Beberapa fitur mungkin terbatas dalam mode privat.",
     "data": "Kesalahan memuat data. Silakan muat ulang.",
