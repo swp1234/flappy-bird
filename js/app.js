@@ -60,6 +60,7 @@ class SkyFlapGame {
         this.shieldTimer = 0;
         this.nextPipeX = this.canvas.width + 50;
         this.difficultyMultiplier = 1;
+        this.wind = { force: 0, target: 0, changeTimer: 0 };
 
         // Image Assets
         this.imagesLoaded = 0;
@@ -318,6 +319,7 @@ class SkyFlapGame {
         this.bird.velocityY = 0;
         this.bird.y = this.canvas.height / 2;
         this.bird.x = this.canvas.width * 0.2;
+        this.wind = { force: 0, target: 0, changeTimer: 0 };
         this.gameStartTime = Date.now();
         this.isPaused = false;
         this.state = 'playing';
@@ -371,6 +373,17 @@ class SkyFlapGame {
         this.bird.velocityY += this.bird.gravity;
         this.bird.velocityY = Math.min(this.bird.velocityY, this.bird.maxVelocity);
         this.bird.y += this.bird.velocityY;
+
+        // Wind effect - gentle horizontal drift
+        this.wind.changeTimer -= 16;
+        if (this.wind.changeTimer <= 0) {
+            this.wind.target = (Math.random() - 0.5) * 1.2 * Math.min(this.difficultyMultiplier, 2);
+            this.wind.changeTimer = 3000 + Math.random() * 4000;
+        }
+        this.wind.force += (this.wind.target - this.wind.force) * 0.02;
+        this.bird.x += this.wind.force;
+        // Keep bird in bounds
+        this.bird.x = Math.max(this.bird.radius + 10, Math.min(this.canvas.width * 0.5, this.bird.x));
 
         // Update Pipes
         this.updatePipes();
@@ -489,17 +502,21 @@ class SkyFlapGame {
                     y: gapY + this.pipeGap / 2 + (Math.random() - 0.5) * 30
                 });
             }
-            this.nextPipeX += this.pipeSpacing;
+            // Variable pipe spacing at higher difficulties
+            const spacingVariation = this.score >= 15 ? (Math.random() - 0.5) * 40 : 0;
+            this.nextPipeX += this.pipeSpacing + spacingVariation;
         }
     }
 
     updateDifficulty() {
-        // Increase difficulty every 5 points
         const newLevel = Math.floor(this.score / 5) + 1;
+        // Smooth continuous difficulty instead of step jumps
+        const progress = this.score / 5; // continuous 0..N
+        this.difficultyMultiplier = 1 + progress * 0.08; // gentler speed increase
+        this.pipeGap = Math.max(120, 160 - progress * 3); // slower gap reduction, tighter min
+
         if (newLevel !== this.level) {
             this.level = newLevel;
-            this.difficultyMultiplier = 1 + (this.level - 1) * 0.1;
-            this.pipeGap = Math.max(130, 160 - (this.level - 1) * 5);
         }
     }
 
@@ -1063,6 +1080,26 @@ class SkyFlapGame {
         this.ctx.strokeText(this.score, this.canvas.width / 2, 60);
         this.ctx.fillText(this.score, this.canvas.width / 2, 60);
         this.ctx.textAlign = 'start';
+
+        // Wind indicator
+        if (Math.abs(this.wind.force) > 0.15) {
+            this.ctx.save();
+            const windX = this.canvas.width - 50;
+            const windY = 20;
+            const arrowLen = this.wind.force * 15;
+            this.ctx.strokeStyle = `rgba(255,255,255,${Math.min(Math.abs(this.wind.force) * 0.8, 0.6)})`;
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.moveTo(windX - arrowLen, windY);
+            this.ctx.lineTo(windX + arrowLen, windY);
+            // Arrow head
+            const dir = Math.sign(arrowLen);
+            this.ctx.lineTo(windX + arrowLen - dir * 6, windY - 4);
+            this.ctx.moveTo(windX + arrowLen, windY);
+            this.ctx.lineTo(windX + arrowLen - dir * 6, windY + 4);
+            this.ctx.stroke();
+            this.ctx.restore();
+        }
     }
 
     showScreen(screenName) {
