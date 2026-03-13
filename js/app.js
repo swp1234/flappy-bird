@@ -1252,8 +1252,12 @@ class SkyFlapGame {
     }
 
     gameLoop() {
-        this.update();
-        this.draw();
+        try {
+            this.update();
+            this.draw();
+        } catch (e) {
+            console.error('Game loop error:', e);
+        }
         this.animationId = requestAnimationFrame(() => this.gameLoop());
     }
 }
