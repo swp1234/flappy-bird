@@ -26,7 +26,15 @@
     "medalBronze": "Bronze",
     "newBest": "NOUVEAU RECORD !",
     "scoreCopied": "Score copié !",
-    "shareText": "{score} points à Sky Flap ! Tu peux faire mieux ?"
+    "shareText": "{score} points à Sky Flap ! Tu peux faire mieux ?",
+    "dailyChallenge": "Defi du Jour",
+    "dailyTargetText": "Atteignez {target}+ points aujourd'hui !",
+    "dailyChallengeComplete": "Defi accompli !",
+    "speedMode": "Mode Rapide (2x Score)",
+    "speedLabel": "RAPIDE 2x",
+    "sessionBest": "Meilleur de la session :",
+    "allTimeBest": "Meilleur de tous les temps :",
+    "recentScores": "Scores recents"
   },
   "nav": {
     "relatedArticles": "📖 Articles connexes",

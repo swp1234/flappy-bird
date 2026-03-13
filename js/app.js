@@ -38,9 +38,12 @@ class SkyFlapGame {
         this.state = 'start'; // 'start', 'playing', 'gameover'
         this.score = 0;
         this.bestScore = this.loadBestScore();
+        this.sessionBest = 0;
         this.level = 1;
         this.gameStartTime = 0;
         this.isPaused = false;
+        this.speedMode = false;
+        this.scoreHistory = this.loadScoreHistory();
 
         // Particles & Effects
         this.particles = [];
@@ -111,6 +114,12 @@ class SkyFlapGame {
         this.pauseIndicator = document.getElementById('pause-indicator');
         this.langToggle = document.getElementById('lang-toggle');
         this.langMenu = document.getElementById('lang-menu');
+        this.speedToggle = document.getElementById('speed-toggle');
+        this.speedIndicator = document.getElementById('speed-indicator');
+        this.sessionBestDisplay = document.getElementById('session-best-score');
+
+        // Daily challenge setup
+        this.initDailyChallenge();
 
         // Event Listeners
         this.setupEventListeners();
@@ -300,8 +309,95 @@ class SkyFlapGame {
         }
     }
 
+    // --- Daily Challenge ---
+    initDailyChallenge() {
+        const today = new Date().toISOString().slice(0, 10);
+        // Seed-based target: 10-30 based on date hash
+        let hash = 0;
+        for (let i = 0; i < today.length; i++) hash = ((hash << 5) - hash) + today.charCodeAt(i);
+        this.dailyTarget = 10 + Math.abs(hash % 21); // 10..30
+        this.dailyDate = today;
+        this.dailyCompleted = localStorage.getItem('flappy_daily_' + today) === 'done';
+
+        const targetEl = document.getElementById('daily-target');
+        const badgeEl = document.getElementById('daily-badge');
+        const challengeEl = document.getElementById('daily-challenge');
+        if (targetEl) {
+            const tpl = window.i18n?.t('game.dailyTargetText', { target: this.dailyTarget }) || `Score ${this.dailyTarget}+ today!`;
+            targetEl.textContent = tpl;
+        }
+        if (this.dailyCompleted) {
+            if (badgeEl) badgeEl.classList.remove('hidden');
+            if (challengeEl) challengeEl.classList.add('completed');
+        }
+    }
+
+    checkDailyChallenge(score) {
+        if (this.dailyCompleted) return;
+        if (score >= this.dailyTarget) {
+            this.dailyCompleted = true;
+            localStorage.setItem('flappy_daily_' + this.dailyDate, 'done');
+            const resultEl = document.getElementById('daily-challenge-result');
+            if (resultEl) resultEl.classList.remove('hidden');
+            // Update start screen badge too
+            const badgeEl = document.getElementById('daily-badge');
+            const challengeEl = document.getElementById('daily-challenge');
+            if (badgeEl) badgeEl.classList.remove('hidden');
+            if (challengeEl) challengeEl.classList.add('completed');
+        }
+    }
+
+    // --- Score History ---
+    loadScoreHistory() {
+        try {
+            const raw = localStorage.getItem('flappy_scoreHistory');
+            return raw ? JSON.parse(raw) : [];
+        } catch { return []; }
+    }
+
+    saveScoreHistory(score) {
+        this.scoreHistory.push(score);
+        if (this.scoreHistory.length > 5) this.scoreHistory = this.scoreHistory.slice(-5);
+        try { localStorage.setItem('flappy_scoreHistory', JSON.stringify(this.scoreHistory)); } catch {}
+    }
+
+    renderScoreHistoryChart() {
+        const container = document.getElementById('score-history-chart');
+        const wrapper = document.getElementById('score-history');
+        if (!container || !wrapper) return;
+
+        if (this.scoreHistory.length === 0) {
+            wrapper.classList.add('hidden');
+            return;
+        }
+        wrapper.classList.remove('hidden');
+        container.innerHTML = '';
+
+        const max = Math.max(...this.scoreHistory, 1);
+        this.scoreHistory.forEach((s, i) => {
+            const bar = document.createElement('div');
+            bar.className = 'score-bar' + (i === this.scoreHistory.length - 1 ? ' latest' : '');
+            const h = Math.max(4, (s / max) * 52);
+            bar.style.height = h + 'px';
+
+            const val = document.createElement('span');
+            val.className = 'score-bar-value';
+            val.textContent = s;
+            bar.appendChild(val);
+
+            container.appendChild(bar);
+        });
+    }
+
     startGame() {
         if (typeof GameAds !== 'undefined') GameAds.removeRewardButton('#gameover-screen');
+
+        // Read speed mode toggle
+        this.speedMode = this.speedToggle ? this.speedToggle.checked : false;
+        if (this.speedIndicator) {
+            this.speedIndicator.classList.toggle('hidden', !this.speedMode);
+        }
+
         this.showScreen('game');
         // Resize canvas AFTER screen is visible (prevents height=0 bug)
         this.resizeCanvas();
@@ -403,7 +499,8 @@ class SkyFlapGame {
     }
 
     updatePipes() {
-        const speed = this.pipesSpeed * this.difficultyMultiplier;
+        const speedMult = this.speedMode ? 1.5 : 1;
+        const speed = this.pipesSpeed * this.difficultyMultiplier * speedMult;
 
         // Move existing pipes left
         for (let i = this.pipes.length - 1; i >= 0; i--) {
@@ -412,11 +509,12 @@ class SkyFlapGame {
             // Check if pipe has passed the bird (score point)
             if (!this.pipes[i].scored && this.pipes[i].x + this.pipeWidth < this.bird.x) {
                 this.pipes[i].scored = true;
-                this.score++;
+                const pts = this.speedMode ? 2 : 1;
+                this.score += pts;
                 if (typeof Haptic !== 'undefined') Haptic.light();
                 this.playSound('score');
                 this.spawnScoreParticles(this.bird.x, this.bird.y);
-                this.addFloatingText('+1', this.bird.x, this.bird.y - 30);
+                this.addFloatingText('+' + pts, this.bird.x, this.bird.y - 30);
 
                 if (this.score % 5 === 0) {
                     this.showInterstitialAd();
@@ -447,10 +545,11 @@ class SkyFlapGame {
                 const dx = this.bird.x - this.coins[i].x;
                 const dy = this.bird.y - this.coins[i].y;
                 if (dx * dx + dy * dy < 22 * 22) {
-                    this.score += 2;
+                    const coinPts = this.speedMode ? 4 : 2;
+                    this.score += coinPts;
                     this.playSound('score');
                     if (typeof Haptic !== 'undefined') Haptic.medium();
-                    this.addFloatingText('+2', this.coins[i].x, this.coins[i].y - 15);
+                    this.addFloatingText('+' + coinPts, this.coins[i].x, this.coins[i].y - 15);
                     this.spawnScoreParticles(this.coins[i].x, this.coins[i].y);
                     this.coins.splice(i, 1);
                 }
@@ -652,17 +751,34 @@ class SkyFlapGame {
         this.spawnCollisionParticles(this.bird.x, this.bird.y);
         this.triggerShake(8, 15);
 
+        // Track session best
+        if (this.score > this.sessionBest) this.sessionBest = this.score;
+
+        // Save score history
+        this.saveScoreHistory(this.score);
+
         // Update final scores
         this.finalScoreDisplay.textContent = this.score;
         this.finalBestScoreDisplay.textContent = this.bestScore;
+        if (this.sessionBestDisplay) this.sessionBestDisplay.textContent = this.sessionBest;
 
         // Medal system
         this.showMedal(this.score);
+
+        // Check daily challenge
+        this.checkDailyChallenge(this.score);
+        // Reset daily challenge result visibility
+        const dcr = document.getElementById('daily-challenge-result');
+        if (dcr) dcr.classList.toggle('hidden', this.score < this.dailyTarget || localStorage.getItem('flappy_daily_' + this.dailyDate) !== 'done');
+
+        // Render score history chart
+        this.renderScoreHistoryChart();
 
         // Check if new record
         if (this.score > this.bestScore) {
             this.bestScore = this.score;
             this.saveBestScore();
+            this.finalBestScoreDisplay.textContent = this.bestScore;
             this.newRecordItem.classList.remove('hidden');
             if (!this._newBestShown) {
                 this._newBestShown = true;
@@ -749,7 +865,7 @@ class SkyFlapGame {
             const gH = 64;
             const groundY = this.canvas.height - gH;
             if (this.state === 'playing' && !this.isPaused) {
-                this.groundScrollX -= this.pipesSpeed * this.difficultyMultiplier;
+                this.groundScrollX -= this.pipesSpeed * this.difficultyMultiplier * (this.speedMode ? 1.5 : 1);
             }
             const offset = ((this.groundScrollX % gW) + gW) % gW;
             for (let tx = -offset; tx < this.canvas.width; tx += gW) {

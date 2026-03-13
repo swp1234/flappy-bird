@@ -26,7 +26,15 @@
     "medalBronze": "Perunggu",
     "newBest": "REKOR BARU!",
     "scoreCopied": "Skor disalin!",
-    "shareText": "Skor saya {score} di Sky Flap! Bisa kalahkan?"
+    "shareText": "Skor saya {score} di Sky Flap! Bisa kalahkan?",
+    "dailyChallenge": "Tantangan Hari Ini",
+    "dailyTargetText": "Raih skor {target}+ hari ini!",
+    "dailyChallengeComplete": "Tantangan selesai!",
+    "speedMode": "Mode Cepat (2x Skor)",
+    "speedLabel": "CEPAT 2x",
+    "sessionBest": "Terbaik Sesi:",
+    "allTimeBest": "Terbaik Sepanjang Masa:",
+    "recentScores": "Skor Terbaru"
   },
   "nav": {
     "relatedArticles": "📖 Artikel terkait",

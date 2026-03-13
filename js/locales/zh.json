@@ -26,7 +26,15 @@
     "medalBronze": "铜牌",
     "newBest": "新纪录！",
     "scoreCopied": "分数已复制！",
-    "shareText": "我在Sky Flap中得了{score}分！来挑战吧！"
+    "shareText": "我在Sky Flap中得了{score}分！来挑战吧！",
+    "dailyChallenge": "今日挑战",
+    "dailyTargetText": "今天得{target}分以上！",
+    "dailyChallengeComplete": "挑战完成！",
+    "speedMode": "极速模式（2倍得分）",
+    "speedLabel": "极速 2x",
+    "sessionBest": "本次最高：",
+    "allTimeBest": "历史最高：",
+    "recentScores": "最近得分"
   },
   "nav": {
     "relatedArticles": "📖 相关文章",

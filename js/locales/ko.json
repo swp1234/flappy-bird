@@ -26,7 +26,15 @@
     "medalBronze": "브론즈",
     "newBest": "최고 기록!",
     "scoreCopied": "점수가 클립보드에 복사되었습니다!",
-    "shareText": "Sky Flap에서 {score}점! 도전해보세요!"
+    "shareText": "Sky Flap에서 {score}점! 도전해보세요!",
+    "dailyChallenge": "오늘의 도전",
+    "dailyTargetText": "오늘 {target}점 이상 달성하세요!",
+    "dailyChallengeComplete": "도전 완료!",
+    "speedMode": "스피드 모드 (2배 점수)",
+    "speedLabel": "스피드 2x",
+    "sessionBest": "세션 최고:",
+    "allTimeBest": "역대 최고:",
+    "recentScores": "최근 점수"
   },
   "nav": {
     "relatedArticles": "📖 관련 글",

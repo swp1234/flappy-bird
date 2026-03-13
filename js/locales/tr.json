@@ -26,7 +26,15 @@
     "medalBronze": "Bronz",
     "newBest": "YENİ REKOR!",
     "scoreCopied": "Skor kopyalandı!",
-    "shareText": "Sky Flap'te {score} puan! Sen de dene!"
+    "shareText": "Sky Flap'te {score} puan! Sen de dene!",
+    "dailyChallenge": "Gunun Gorevi",
+    "dailyTargetText": "Bugun {target}+ puan yap!",
+    "dailyChallengeComplete": "Gorev tamamlandi!",
+    "speedMode": "Hiz Modu (2x Puan)",
+    "speedLabel": "HIZ 2x",
+    "sessionBest": "Oturum En Iyi:",
+    "allTimeBest": "Tum Zamanlarin En Iyisi:",
+    "recentScores": "Son Puanlar"
   },
   "nav": {
     "relatedArticles": "📖 İlgili yazılar",

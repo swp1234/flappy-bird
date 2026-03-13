@@ -26,7 +26,15 @@
     "medalBronze": "ब्रॉन्ज़",
     "newBest": "नया रिकॉर्ड!",
     "scoreCopied": "स्कोर कॉपी हो गया!",
-    "shareText": "Sky Flap में {score} अंक! चुनौती स्वीकारें!"
+    "shareText": "Sky Flap में {score} अंक! चुनौती स्वीकारें!",
+    "dailyChallenge": "आज की चुनौती",
+    "dailyTargetText": "आज {target}+ अंक प्राप्त करें!",
+    "dailyChallengeComplete": "चुनौती पूरी!",
+    "speedMode": "स्पीड मोड (2x स्कोर)",
+    "speedLabel": "स्पीड 2x",
+    "sessionBest": "सत्र सर्वश्रेष्ठ:",
+    "allTimeBest": "सर्वकालिक सर्वश्रेष्ठ:",
+    "recentScores": "हाल के स्कोर"
   },
   "nav": {
     "relatedArticles": "📖 संबंधित लेख",

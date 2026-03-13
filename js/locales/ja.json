@@ -26,7 +26,15 @@
     "medalBronze": "ブロンズ",
     "newBest": "最高記録！",
     "scoreCopied": "スコアをコピーしました！",
-    "shareText": "Sky Flapで{score}点！挑戦してみて！"
+    "shareText": "Sky Flapで{score}点！挑戦してみて！",
+    "dailyChallenge": "今日のチャレンジ",
+    "dailyTargetText": "今日{target}点以上を目指せ！",
+    "dailyChallengeComplete": "チャレンジ達成！",
+    "speedMode": "スピードモード（2倍スコア）",
+    "speedLabel": "スピード 2x",
+    "sessionBest": "セッション最高:",
+    "allTimeBest": "歴代最高:",
+    "recentScores": "最近のスコア"
   },
   "nav": {
     "relatedArticles": "📖 関連記事",

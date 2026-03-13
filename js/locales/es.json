@@ -26,7 +26,15 @@
     "medalBronze": "Bronce",
     "newBest": "¡NUEVO RÉCORD!",
     "scoreCopied": "¡Puntuación copiada!",
-    "shareText": "¡{score} puntos en Sky Flap! ¿Puedes superarme?"
+    "shareText": "¡{score} puntos en Sky Flap! ¿Puedes superarme?",
+    "dailyChallenge": "Desafio del Dia",
+    "dailyTargetText": "¡Consigue {target}+ puntos hoy!",
+    "dailyChallengeComplete": "¡Desafio completado!",
+    "speedMode": "Modo Rapido (2x Puntos)",
+    "speedLabel": "RAPIDO 2x",
+    "sessionBest": "Mejor de la sesion:",
+    "allTimeBest": "Mejor historico:",
+    "recentScores": "Puntuaciones recientes"
   },
   "nav": {
     "relatedArticles": "📖 Artículos relacionados",

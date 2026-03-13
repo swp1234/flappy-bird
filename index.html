@@ -165,6 +165,28 @@
                     <span data-i18n="game.bestScore">Best Score:</span>
                     <span id="best-score-display">0</span>
                 </div>
+
+                <!-- Daily Challenge Banner -->
+                <div class="daily-challenge" id="daily-challenge">
+                    <div class="daily-challenge-icon">&#127942;</div>
+                    <div class="daily-challenge-text">
+                        <span class="daily-label" data-i18n="game.dailyChallenge">Today's Challenge</span>
+                        <span class="daily-target" id="daily-target"></span>
+                    </div>
+                    <span class="daily-badge hidden" id="daily-badge">&#9989;</span>
+                </div>
+
+                <!-- Speed Mode Toggle -->
+                <div class="speed-mode-toggle">
+                    <label class="toggle-label" for="speed-toggle">
+                        <span data-i18n="game.speedMode">Speed Mode (2x Score)</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="speed-toggle">
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </label>
+                </div>
+
                 <button id="start-btn" class="btn btn-primary" data-i18n="game.start">Play</button>
             </div>
         </div>
@@ -179,6 +201,9 @@
                 <div class="level-display">
                     <span data-i18n="game.level">Level:</span>
                     <span id="current-level">1</span>
+                </div>
+                <div class="speed-indicator hidden" id="speed-indicator">
+                    <span data-i18n="game.speedLabel">SPEED 2x</span>
                 </div>
             </div>
             <canvas id="game-canvas"></canvas>
@@ -197,12 +222,27 @@
                         <span id="final-score">0</span>
                     </div>
                     <div class="score-item">
-                        <span data-i18n="game.bestScore">Best Score:</span>
+                        <span data-i18n="game.sessionBest">Session Best:</span>
+                        <span id="session-best-score">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span data-i18n="game.allTimeBest">All-Time Best:</span>
                         <span id="final-best-score">0</span>
                     </div>
                     <div class="score-item hidden" id="new-record-item">
                         <span class="new-record" data-i18n="game.newRecord">New Record!</span>
                     </div>
+                    <!-- Daily Challenge Progress -->
+                    <div class="score-item hidden" id="daily-challenge-result">
+                        <span data-i18n="game.dailyChallengeComplete">Challenge Complete!</span>
+                        <span class="daily-result-badge">&#127942;</span>
+                    </div>
+                </div>
+
+                <!-- Score History Mini Chart -->
+                <div class="score-history" id="score-history">
+                    <span class="score-history-label" data-i18n="game.recentScores">Recent Scores</span>
+                    <div class="score-history-chart" id="score-history-chart"></div>
                 </div>
                 <div class="medal-display hidden" id="medal-display">
                     <span class="medal-icon" id="medal-icon"></span>

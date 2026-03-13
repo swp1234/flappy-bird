@@ -26,7 +26,15 @@
     "medalBronze": "Bronze",
     "newBest": "NEW BEST!",
     "scoreCopied": "Score copied to clipboard!",
-    "shareText": "I scored {score} in Sky Flap! Can you beat me?"
+    "shareText": "I scored {score} in Sky Flap! Can you beat me?",
+    "dailyChallenge": "Today's Challenge",
+    "dailyTargetText": "Score {target}+ today!",
+    "dailyChallengeComplete": "Challenge Complete!",
+    "speedMode": "Speed Mode (2x Score)",
+    "speedLabel": "SPEED 2x",
+    "sessionBest": "Session Best:",
+    "allTimeBest": "All-Time Best:",
+    "recentScores": "Recent Scores"
   },
   "nav": {
     "relatedArticles": "📖 Related Articles",

@@ -26,7 +26,15 @@
     "medalBronze": "Бронза",
     "newBest": "НОВЫЙ РЕКОРД!",
     "scoreCopied": "Счёт скопирован!",
-    "shareText": "Мой результат в Sky Flap: {score}! Попробуй побить!"
+    "shareText": "Мой результат в Sky Flap: {score}! Попробуй побить!",
+    "dailyChallenge": "Задание дня",
+    "dailyTargetText": "Набери {target}+ очков сегодня!",
+    "dailyChallengeComplete": "Задание выполнено!",
+    "speedMode": "Режим скорости (2x очки)",
+    "speedLabel": "СКОРОСТЬ 2x",
+    "sessionBest": "Лучший за сессию:",
+    "allTimeBest": "Лучший за всё время:",
+    "recentScores": "Последние результаты"
   },
   "nav": {
     "relatedArticles": "📖 Статьи",
