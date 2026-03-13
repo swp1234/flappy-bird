@@ -822,6 +822,20 @@ class SkyFlapGame {
             }
         }
 
+        // Bird trail particles
+        if (this.state === 'playing' && Math.random() < 0.3) {
+            this.particles.push({
+                x: this.bird.x - this.bird.radius,
+                y: this.bird.y + (Math.random() - 0.5) * 6,
+                vx: -1 - Math.random() * 0.5,
+                vy: (Math.random() - 0.5) * 0.3,
+                life: 0.6,
+                decay: 0.03,
+                radius: 1.5 + Math.random() * 1.5,
+                color: `hsl(${45 + Math.random() * 15}, 100%, ${60 + Math.random() * 20}%)`
+            });
+        }
+
         // Draw bird
         this.drawBird();
 
