@@ -4,6 +4,7 @@ class I18n {
         this.translations = {};
         this.supportedLanguages = ['ko', 'en', 'ja', 'zh', 'es', 'pt', 'id', 'tr', 'de', 'fr', 'hi', 'ru'];
         this.currentLang = this.detectLanguage();
+        document.documentElement.lang = this.currentLang;
         this.initialized = false;
     }
 
@@ -12,11 +13,21 @@ class I18n {
      * Priority: localStorage > browser language > 'en'
      */
     detectLanguage() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const urlLang = params.get('lang');
+            if (urlLang && this.supportedLanguages.includes(urlLang)) {
+                return urlLang;
+            }
+        } catch (e) {}
+
         // Check localStorage
-        const saved = localStorage.getItem('preferred-language');
-        if (saved && this.supportedLanguages.includes(saved)) {
-            return saved;
-        }
+        try {
+            const saved = localStorage.getItem('preferred-language');
+            if (saved && this.supportedLanguages.includes(saved)) {
+                return saved;
+            }
+        } catch (e) {}
 
         // Check browser language
         const browserLang = navigator.language.split('-')[0].toLowerCase();
@@ -135,7 +146,10 @@ class I18n {
         }
 
         this.currentLang = lang;
-        localStorage.setItem('preferred-language', lang);
+        document.documentElement.lang = lang;
+        try {
+            localStorage.setItem('preferred-language', lang);
+        } catch (e) {}
 
         // Load translations for new language
         await this.loadLocale(lang);
@@ -151,6 +165,8 @@ class I18n {
      * Update all elements with data-i18n attribute
      */
     updateDOM() {
+        document.documentElement.lang = this.currentLang;
+
         const elements = document.querySelectorAll('[data-i18n]');
         elements.forEach(el => {
             const key = el.getAttribute('data-i18n');
@@ -166,6 +182,10 @@ class I18n {
             } else {
                 el.textContent = translation;
             }
+        });
+
+        document.querySelectorAll('.lang-option').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-lang') === this.currentLang);
         });
     }
 
