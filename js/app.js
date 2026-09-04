@@ -13,6 +13,16 @@ if (themeToggle) {
     });
 }
 
+const trackedStages = new Set();
+
+function trackStage(eventName, targetSlug = '') {
+    if (trackedStages.has(eventName)) return;
+    trackedStages.add(eventName);
+    if (typeof window.gtag !== 'function') return;
+    const params = targetSlug ? { target_slug: targetSlug } : {};
+    window.gtag('event', eventName, params);
+}
+
 // Sky Flap Game - Main Application
 class SkyFlapGame {
     constructor() {
@@ -131,8 +141,10 @@ class SkyFlapGame {
 
     resizeCanvas() {
         const wrapper = this.canvas.parentElement;
-        this.canvas.width = wrapper.clientWidth;
-        this.canvas.height = wrapper.clientHeight;
+        const displayWidth = this.canvas.clientWidth || wrapper.clientWidth;
+        const displayHeight = this.canvas.clientHeight || wrapper.clientHeight;
+        this.canvas.width = Math.max(1, Math.floor(displayWidth));
+        this.canvas.height = Math.max(1, Math.floor(displayHeight));
 
         // Adjust bird starting position
         this.bird.x = this.canvas.width * 0.2;
@@ -390,7 +402,7 @@ class SkyFlapGame {
     }
 
     startGame() {
-        if (typeof GameAds !== 'undefined') GameAds.removeRewardButton('#gameover-screen');
+        trackStage('flappy_start');
 
         // Read speed mode toggle
         this.speedMode = this.speedToggle ? this.speedToggle.checked : false;
@@ -445,20 +457,18 @@ class SkyFlapGame {
         this.updateBestScoreDisplay();
     }
 
-    shareResult() {
-        const shareMsg = window.i18n?.t('game.shareText', { score: this.score }) || `I scored ${this.score} in Sky Flap! Can you beat me?`;
-        const text = shareMsg + ' https://dopabrain.com/games/sky-flap/';
-        if (navigator.share) {
-            navigator.share({
-                title: 'Sky Flap',
-                text: text,
-                url: window.location.href
-            });
-        } else {
-            // Fallback: copy to clipboard
-            navigator.clipboard.writeText(text).then(() => {
-                alert(window.i18n?.t('game.scoreCopied') || 'Score copied to clipboard!');
-            });
+    async shareResult() {
+        const text = 'I played Sky Flap on DopaBrain.';
+        const url = 'https://dopabrain.com/flappy-bird/';
+        try {
+            if (navigator.share) await navigator.share({ title: 'Sky Flap', text, url });
+            else {
+                await navigator.clipboard.writeText(`${text} ${url}`);
+                alert(window.i18n?.t('game.scoreCopied') || 'Link copied!');
+            }
+            trackStage('flappy_share');
+        } catch (_) {
+            // Cancellation and clipboard failures are not successful shares.
         }
     }
 
@@ -516,9 +526,6 @@ class SkyFlapGame {
                 this.spawnScoreParticles(this.bird.x, this.bird.y);
                 this.addFloatingText('+' + pts, this.bird.x, this.bird.y - 30);
 
-                if (this.score % 5 === 0) {
-                    this.showInterstitialAd();
-                }
             }
 
             // Remove pipes that are off-screen
@@ -745,6 +752,7 @@ class SkyFlapGame {
     }
 
     gameOver() {
+        trackStage('flappy_complete');
         if (typeof Haptic !== 'undefined') Haptic.heavy();
         this.state = 'gameover';
         this.playSound('collision');
@@ -789,39 +797,7 @@ class SkyFlapGame {
             this.newRecordItem.classList.add('hidden');
         }
 
-        if (typeof DailyStreak !== 'undefined') DailyStreak.report(this.score);
-
-        // Track games played and report achievements
-        const flappyGamesPlayed = (parseInt(localStorage.getItem('flappy_gamesPlayed')) || 0) + 1;
-        localStorage.setItem('flappy_gamesPlayed', flappyGamesPlayed);
-        if (typeof GameAchievements !== 'undefined') {
-            GameAchievements.report({ bestScore: this.bestScore, gamesPlayed: flappyGamesPlayed });
-        }
-
-        const showGameOverAndReward = () => {
-            this.showScreen('gameover');
-            if (typeof GameAds !== 'undefined') {
-                GameAds.injectRewardButton({
-                    container: '#gameover-screen',
-                    label: 'Watch Ad for 2x Score',
-                    onReward: () => {
-                        this.score *= 2;
-                        this.finalScoreDisplay.textContent = this.score;
-                        if (this.score > this.bestScore) {
-                            this.bestScore = this.score;
-                            this.saveBestScore();
-                            this.finalBestScoreDisplay.textContent = this.bestScore;
-                        }
-                    }
-                });
-            }
-        };
-
-        if (typeof GameAds !== 'undefined') {
-            GameAds.showInterstitial({ onComplete: () => showGameOverAndReward() });
-        } else {
-            showGameOverAndReward();
-        }
+        this.showScreen('gameover');
     }
 
     draw() {
@@ -1233,11 +1209,6 @@ class SkyFlapGame {
         }
     }
 
-    showInterstitialAd() {
-        // In production, this would trigger AdSense interstitial ad
-        console.log('Interstitial ad would show here (every 5 points)');
-    }
-
     updateBestScoreDisplay() {
         this.bestScoreDisplay.textContent = this.bestScore;
     }
@@ -1276,27 +1247,14 @@ async function initApp() {
     }
 
     game = new SkyFlapGame();
-    if (typeof GameAds !== 'undefined') GameAds.init();
-    if (typeof DailyStreak !== 'undefined') {
-      DailyStreak.init({ gameId: 'flappy-bird', bestScoreKey: 'sky-flap-best-score', minTarget: 3 });
-    }
 
-    if (typeof GameAchievements !== 'undefined') {
-      GameAchievements.init({
-        gameId: 'flappy-bird',
-        defs: [
-          { id: 'score_5', stat: 'bestScore', target: 5, icon: '\uD83D\uDC26', name: 'Fledgling' },
-          { id: 'score_15', stat: 'bestScore', target: 15, icon: '\uD83D\uDC26', name: 'Aviator' },
-          { id: 'score_30', stat: 'bestScore', target: 30, icon: '\uD83D\uDC26', name: 'Sky Master' },
-          { id: 'score_50', stat: 'bestScore', target: 50, icon: '\uD83D\uDC26', name: 'Legend' },
-          { id: 'score_100', stat: 'bestScore', target: 100, icon: '\uD83E\uDD85', name: 'Eagle' },
-          { id: 'games_10', stat: 'gamesPlayed', target: 10, icon: '\uD83C\uDFAE', name: 'Persistent' },
-          { id: 'games_50', stat: 'gamesPlayed', target: 50, icon: '\uD83C\uDFAE', name: 'Dedicated' },
-        ]
-      });
-    }
+    document.addEventListener('click', (event) => {
+        const link = event.target.closest('[data-related-slug]');
+        if (link) trackStage('flappy_related_click', link.dataset.relatedSlug);
+    });
 
     initSoundToggle();
+    trackStage('flappy_view');
 
     // Hide loader if present
     const loader = document.getElementById('app-loader');

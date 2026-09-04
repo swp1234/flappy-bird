@@ -2,8 +2,8 @@
   "name": "Sky Flap - Casual Arcade Game",
   "short_name": "Sky Flap",
   "description": "A fun and addictive casual arcade game. Tap to fly, avoid obstacles, and beat your best score!",
-  "start_url": "index.html",
-  "scope": "./",
+  "start_url": "/flappy-bird/",
+  "scope": "/flappy-bird/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#0f0f23",
@@ -43,7 +43,7 @@
       "name": "Play Game",
       "short_name": "Play",
       "description": "Start a new game of Sky Flap",
-      "url": "index.html?action=play",
+      "url": "/flappy-bird/?action=play",
       "icons": [
         {
           "src": "icon-192.svg",
